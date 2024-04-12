@@ -37,4 +37,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // Including necessary JSON serialisation dependency:
+    implementation("com.google.code.gson:gson:2.10.1")
+    // Including retrofit library for simplifying network requests.
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson converter for Retrofit
 }
