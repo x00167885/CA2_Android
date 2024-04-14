@@ -1,6 +1,8 @@
 package com.example.eventplanner.Models;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
     private int personId;
     private String name;
     private int age;
@@ -29,5 +31,10 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override // Overriding the ToString output for a nicer list on events list page.
+    public String toString() {
+        return getName();
     }
 }

@@ -1,19 +1,20 @@
 package com.example.eventplanner;
 
 // Default Imports:
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-// My imports:
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import com.example.eventplanner.API.APIService;
 import com.example.eventplanner.API.RetrofitClient;
 import com.example.eventplanner.Models.Event;
@@ -21,14 +22,13 @@ import com.example.eventplanner.Models.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-// For retrofit response parsing:
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EventsList extends AppCompatActivity {
-    private ListView eventsList = findViewById(R.id.eventsList);
-    private ArrayAdapter<String> arrayAdapter;
+    private ListView eventsList;
+    private ArrayAdapter<Event> arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // BOILERPLATE:
@@ -41,8 +41,10 @@ public class EventsList extends AppCompatActivity {
             return insets;
         });
 
+        eventsList = findViewById(R.id.eventsList);
+
         // Setting the listview to empty by default (before giving it a populated adapter).
-        arrayAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, new ArrayList<>());
+        arrayAdapter = new ArrayAdapter<Event>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, new ArrayList<>());
         eventsList.setAdapter(arrayAdapter);
 
         // Fetch the events from the API
@@ -64,13 +66,16 @@ public class EventsList extends AppCompatActivity {
 
         // So we can click on an event from the list.
         eventsList.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedEvent = arrayAdapter.getItem(position);
+            Event selectedEvent = arrayAdapter.getItem(position);
             // Going to go to the selected events details page from here, below:
-            //.... - List people part of the event, the time of the event etc....
+            Intent intent = new Intent(getApplicationContext(), EventDetails.class);
+            // Pass any necessary data to the details activity using intent extras
+            intent.putExtra("selectedEvent", selectedEvent);
+            startActivity(intent);
         });
 
         // Back button Welcome page. (MAIN)
-        Button eventsListLink = findViewById(R.id.button2);
+        Button eventsListLink = findViewById(R.id.back_to_event_list);
         eventsListLink.setOnClickListener(v -> {
             Intent intent = new Intent( EventsList.this, MainActivity.class);
             startActivity(intent);
@@ -78,13 +83,13 @@ public class EventsList extends AppCompatActivity {
     }
     private void updateListView(List<Event> events) {
         // Create a list of strings to display in the ListView
-        List<String> eventTitles = new ArrayList<>();
+        List<Event> eventObjects = new ArrayList<>();
         for (Event event : events) {
-            eventTitles.add(event.getTitle());
+            eventObjects.add(event);
         }
 
         // Creating a new adapter with the new data, and attaching it to the already created ListView (eventslist).
-        arrayAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, eventTitles);
+        arrayAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, eventObjects);
         eventsList.setAdapter(arrayAdapter);
     }
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventDetails">
+
+    <TextView
+        android:id="@+id/event_name_text_view"
+        android:layout_width="193dp"
+        android:layout_height="96dp"
+        android:text="Event Name"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.074" />
+
+    <Button
+        android:id="@+id/back_to_event_list"
+        android:layout_width="128dp"
+        android:layout_height="86dp"
+        android:text="Back"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/event_name_text_view"
+        app:layout_constraintVertical_bias="0.796" />
+
+    <TextView
+        android:id="@+id/event_date"
+        android:layout_width="161dp"
+        android:layout_height="33dp"
+        android:text="Date Of Event"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/back_to_event_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_name_text_view"
+        app:layout_constraintVertical_bias="0.017" />
+
+    <ListView
+        android:id="@+id/attendee_list"
+        android:layout_width="409dp"
+        android:layout_height="359dp"
+        app:layout_constraintBottom_toTopOf="@+id/back_to_event_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_date" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
