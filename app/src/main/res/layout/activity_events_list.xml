@@ -8,7 +8,7 @@
     tools:context=".EventsList">
 
     <Button
-        android:id="@+id/back_to_event_list"
+        android:id="@+id/goto_update_event"
         android:layout_width="128dp"
         android:layout_height="86dp"
         android:text="Back"

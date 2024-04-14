@@ -5,6 +5,7 @@ package com.example.eventplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -42,9 +43,8 @@ public class EventsList extends AppCompatActivity {
         });
 
         eventsList = findViewById(R.id.eventsList);
-
         // Setting the listview to empty by default (before giving it a populated adapter).
-        arrayAdapter = new ArrayAdapter<Event>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, new ArrayList<>());
+        arrayAdapter = new ArrayAdapter<Event>(this, R.layout.list_item, new ArrayList<>());
         eventsList.setAdapter(arrayAdapter);
 
         // Fetch the events from the API
@@ -75,10 +75,12 @@ public class EventsList extends AppCompatActivity {
         });
 
         // Back button Welcome page. (MAIN)
-        Button eventsListLink = findViewById(R.id.back_to_event_list);
-        eventsListLink.setOnClickListener(v -> {
-            Intent intent = new Intent( EventsList.this, MainActivity.class);
-            startActivity(intent);
+        Button eventsListLink = findViewById(R.id.goto_update_event);
+        eventsListLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
         });
     }
     private void updateListView(List<Event> events) {
@@ -89,7 +91,7 @@ public class EventsList extends AppCompatActivity {
         }
 
         // Creating a new adapter with the new data, and attaching it to the already created ListView (eventslist).
-        arrayAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, eventObjects);
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, eventObjects);
         eventsList.setAdapter(arrayAdapter);
     }
 }

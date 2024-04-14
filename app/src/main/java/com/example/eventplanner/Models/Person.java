@@ -1,10 +1,15 @@
 package com.example.eventplanner.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Person implements Serializable {
+    @SerializedName("personId")
     private int personId;
+    @SerializedName("name")
     private String name;
+    @SerializedName("age")
     private int age;
 
     // Getters
