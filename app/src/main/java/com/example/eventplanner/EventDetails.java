@@ -2,7 +2,6 @@ package com.example.eventplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,22 +18,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.eventplanner.API.APIService;
 import com.example.eventplanner.API.RetrofitClient;
 import com.example.eventplanner.Models.Event;
 import com.example.eventplanner.Models.Person;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class EventDetails extends AppCompatActivity {
     private ListView AttendeeList;
     private ArrayAdapter<Person> arrayAdapter;
     private int UPDATE_REQUEST_CODE = 1;
-
     private boolean isUserInteracted = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +40,9 @@ public class EventDetails extends AppCompatActivity {
             return insets;
         });
 
-        // Instantiating API Service:
-        APIService apiService = RetrofitClient.getApiService();
-
         // Retrieve the data passed from the event list activity.
         Event selectedEvent = (Event) getIntent().getSerializableExtra("selectedEvent");
         ArrayList<Person> retrievedPeople = (ArrayList<Person>) getIntent().getSerializableExtra("retrievedPeople");
-
-        System.out.println("People retrieved: \n" + retrievedPeople);
 
         // Getting the name of the Event
         TextView eventNameTextView = findViewById(R.id.event_name_text_view);
@@ -80,24 +68,8 @@ public class EventDetails extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (isUserInteracted) {
                     Person selectedPerson = (Person) parent.getItemAtPosition(position);
-                    // Making an api call to successfully add a person to the event.
-                    apiService.addPersonToEvent(selectedEvent.getId(), selectedPerson.getId()).enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                // Displaying Confirmation message that the user has been successfully added to the event.
-                                Toast.makeText(getApplicationContext(), "Person added to event successfully", Toast.LENGTH_LONG).show();
-                            } else {
-                                // Handling the case where the server responds with an error
-                                Toast.makeText(getApplicationContext(), "Person not added to event.", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            // Handle failure such as a network error
-                            Log.e("EventsList", "Error adding person to event", t);
-                        }
-                    });
+                    // Using our RetrofitClient helper function to make the request given the activity context.
+                    RetrofitClient.addPersonToEventHelper(getApplicationContext(), selectedEvent.getId(), selectedPerson.getId());
                 }
             }
             @Override
@@ -116,26 +88,21 @@ public class EventDetails extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<Person>(this, R.layout.list_item, selectedEvent.getEventsPeople());
         AttendeeList.setAdapter(arrayAdapter);
 
+        // Button to go to edit event page.
         Button buttonEditEvent = findViewById(R.id.goto_update_event);
-        buttonEditEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create an intent to start the UpdateEvent activity
-                Intent intent = new Intent(EventDetails.this, UpdateEvent.class);
-                // You can also pass the entire event object if the Event class implements Serializable
-                intent.putExtra("eventDetails", selectedEvent);
-                // Start the activity and expect a result back
-                startActivityForResult(intent, UPDATE_REQUEST_CODE);
-            }
+        buttonEditEvent.setOnClickListener(v -> {
+            // Create an intent to start the UpdateEvent activity
+            Intent intent = new Intent(EventDetails.this, UpdateEvent.class);
+            // You can also pass the entire event object if the Event class implements Serializable
+            intent.putExtra("eventDetails", selectedEvent);
+            // Start the activity and expect a result back.
+            startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
 
         // Button to go to the events list.
         Button eventsListLink = findViewById(R.id.back_to_event_list);
-        eventsListLink.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        eventsListLink.setOnClickListener(v -> {
+            finish();
         });
     }
 
@@ -144,17 +111,17 @@ public class EventDetails extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             Event updatedEvent = (Event) data.getSerializableExtra("updatedEvent");
+            // Making sure we are getting an event object back from the event update page. (Otherwise display a toast error.)
             if (updatedEvent != null) {
-                updateUIWithEventDetails(updatedEvent);
+                updateEventDetailsInUI(updatedEvent);
             } else {
                 Toast.makeText(this, "No updated event data received.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    // Define a method to update your UI components with the updated event details
-    private void updateUIWithEventDetails(Event event) {
-        // Assuming you have TextViews for the event title, date, and description
+    // Editing our existing event on activity return.
+    private void updateEventDetailsInUI(Event event) {
         TextView eventNameTextView = findViewById(R.id.event_name_text_view);
         eventNameTextView.setText(event.getTitle());
 
