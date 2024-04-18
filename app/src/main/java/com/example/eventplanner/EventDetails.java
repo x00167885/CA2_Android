@@ -69,7 +69,12 @@ public class EventDetails extends AppCompatActivity {
                 if (isUserInteracted) {
                     Person selectedPerson = (Person) parent.getItemAtPosition(position);
                     // Using our RetrofitClient helper function to make the request given the activity context.
-                    RetrofitClient.addPersonToEventHelper(getApplicationContext(), selectedEvent.getId(), selectedPerson.getId());
+                    RetrofitClient.addPersonToEventHelper(getApplicationContext(), selectedEvent.getId(), selectedPerson.getId(), personIsAddedSoDoThisNext -> {
+                        // Refreshing the current events details. USING CONSUMABLE TO CHAIN THE ASYNCHRONOUS CALLS.
+                        RetrofitClient.getEventByIdHelper(selectedEvent.getId(), retrievedEvent -> {
+                            updateEventAttendees(retrievedEvent);
+                        });
+                    });
                 }
             }
             @Override
@@ -85,7 +90,7 @@ public class EventDetails extends AppCompatActivity {
 
         // Listing people who are going to the event.
         AttendeeList = findViewById(R.id.attendee_list);
-        arrayAdapter = new ArrayAdapter<Person>(this, R.layout.list_item, selectedEvent.getEventsPeople());
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, selectedEvent.getEventsPeople());
         AttendeeList.setAdapter(arrayAdapter);
 
         // Button to go to edit event page.
@@ -125,7 +130,7 @@ public class EventDetails extends AppCompatActivity {
         }
     }
 
-    // Editing our existing event on activity return.
+    // Editing our existing event details on activity return.
     private void updateEventDetailsInUI(Event event) {
         TextView eventNameTextView = findViewById(R.id.event_name_text_view);
         eventNameTextView.setText(event.getTitle());
@@ -135,5 +140,13 @@ public class EventDetails extends AppCompatActivity {
 
         TextView eventDescriptionView = findViewById(R.id.event_description);
         eventDescriptionView.setText(event.getDescription());
+    }
+
+    // Updating event attendees list when we add a person to the event.
+    private void updateEventAttendees(Event event){
+        // Updating the list of people when adding a person to an event.
+        AttendeeList = findViewById(R.id.attendee_list);
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, event.getEventsPeople());
+        AttendeeList.setAdapter(arrayAdapter);
     }
 }

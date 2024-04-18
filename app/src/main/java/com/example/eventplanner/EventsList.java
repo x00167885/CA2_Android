@@ -54,7 +54,7 @@ public class EventsList extends AppCompatActivity {
         // Listing out the events.
         eventsList = findViewById(R.id.eventsList);
         // Setting the listview to empty by default (before giving it a populated adapter).
-        arrayAdapter = new ArrayAdapter<Event>(this, R.layout.list_item, new ArrayList<Event>());
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, new ArrayList<>());
         eventsList.setAdapter(arrayAdapter);
 
         // So we can click on an event from the list.
@@ -71,9 +71,18 @@ public class EventsList extends AppCompatActivity {
         });
 
         // Back button Welcome page. (MAIN)
-        Button eventsListLink = findViewById(R.id.goto_update_event);
+        Button eventsListLink = findViewById(R.id.back_to_welcome_page);
         eventsListLink.setOnClickListener(v -> {
             finish();
+        });
+
+        // Create Event button.
+        Button addEventLink = findViewById(R.id.add_event_button);
+        addEventLink.setOnClickListener(v -> {
+            // Going to go to the selected events details page from here, below:
+            Intent intent = new Intent(getApplicationContext(), AddEvent.class);
+            // Start the activity and expect a result back if an event has been updated.
+            startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
     }
 
@@ -91,14 +100,16 @@ public class EventsList extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK && data.hasExtra("updatedEvent")) {
-            RetrofitClient.getEventsHelper(retrievedEvents -> {
-                List<Event> eventsData = retrievedEvents;
-                // Updating our list, so we have the most up-date-content after updating an event.
-                updateEventListView(eventsData);
-            });
-        }else{
-            System.out.println("Event wasn't updated so nothing to update.");
+        if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK) {
+            if(data != null && data.hasExtra("updatedEvent") || data.hasExtra("addedEvent")){
+                RetrofitClient.getEventsHelper(retrievedEvents -> {
+                    List<Event> eventsData = retrievedEvents;
+                    // Updating our list, so we have the most up-date-content after updating an event.
+                    updateEventListView(eventsData);
+                });
+            }else{
+                System.out.println("No Event was added or updated so no need to refresh.");
+            }
         }
     }
 }

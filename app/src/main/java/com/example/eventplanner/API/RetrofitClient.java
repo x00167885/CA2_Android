@@ -55,13 +55,15 @@ public class RetrofitClient {
     };
 
     // Adding person to event, endpoint.
-    public static void addPersonToEventHelper(Context context, int eventId, int personId){
+    public static void addPersonToEventHelper(Context context, int eventId, int personId, Consumer<Response> onSuccess){
         getApiService().addPersonToEvent(eventId, personId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     // Displaying Confirmation message that the user has been successfully added to the event.
                     Toast.makeText(context, "Person added to event successfully", Toast.LENGTH_LONG).show();
+                    // Just passing back the success response. (Even though we aren't going to be using it, it's just for chaining the async calls)
+                    onSuccess.accept(response);
                 } else {
                     // Handling the case where the server responds with an error
                     Toast.makeText(context, "Person not added to event.", Toast.LENGTH_LONG).show();
@@ -89,6 +91,43 @@ public class RetrofitClient {
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 Log.e("EventsList", "Error fetching events" + t);
+            }
+        });
+    }
+
+    // Get event by it's id, endpoint.
+    public static void getEventByIdHelper(int eventId, Consumer<Event> onEventRequestSuccess){
+        getApiService().getEventById(eventId).enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                if (response.isSuccessful()) {
+                    onEventRequestSuccess.accept(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Log.e("Event", "Error fetching event" + t);
+            }
+        });
+    }
+
+    // Adding an Event endpoint.
+    public static void addEventHelper(Context context, Event event){
+        getApiService().addEvent(event).enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                if (response.isSuccessful()) {
+                    // Notify the user of successfully adding an event.
+                    Toast.makeText(context, "Event updated successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Notify the user that there was a problem.
+                    Toast.makeText(context, "Update failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                // The call failed to execute. Handle the failure, typically an IOException.
+                Toast.makeText(context, "Update failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

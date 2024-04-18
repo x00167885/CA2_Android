@@ -8,14 +8,27 @@
     tools:context=".EventsList">
 
     <Button
-        android:id="@+id/goto_update_event"
+        android:id="@+id/back_to_welcome_page"
         android:layout_width="128dp"
         android:layout_height="86dp"
         android:text="Back"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.208"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.947" />
+
+    <Button
+        android:id="@+id/add_event_button"
+        android:layout_width="128dp"
+        android:layout_height="86dp"
+        android:text="Create Event"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.787"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.947" />

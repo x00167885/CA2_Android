@@ -18,6 +18,12 @@ public interface APIService {
     @GET("api/Events")
     Call<List<Event>> getEvents();
 
+    @GET("api/Events/{id}")
+    Call<Event> getEventById(@Path("id") int id);
+
+    @POST("api/Events")
+    Call<Event> addEvent(@Body Event event);
+
     @PUT("api/Events/{id}")
     Call<Event> updateEvent(@Path("id") int id, @Body Event event);
 
@@ -25,7 +31,7 @@ public interface APIService {
     @GET("api/Events/People")
     Call<List<Person>> getPeople();
 
-    @POST("api/Events/{eventId}/AddPerson/{personId}")
+    @POST("api/Events/{eventId}/Person/{personId}")
     Call<Void> addPersonToEvent(@Path("eventId") int eventId, @Path("personId") int personId);
 
     // NEED TO DO LATER:
