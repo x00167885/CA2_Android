@@ -99,7 +99,7 @@ public class UpdateEvent extends AppCompatActivity {
 
         // Make the API call to update the event with the new information
         RetrofitClient.updateEventHelper(getApplicationContext(), event, eventForUpdate, updatedEvent -> {
-            // Pass the updated event back to the previous activity
+            // Pass the updated event back to the previous activity, and set the result of the activity to OK!
             Intent resultIntent = new Intent();
             resultIntent.putExtra("updatedEvent", updatedEvent); // Consume the updatedEvent from the API service and pass it back to the details page.
             setResult(RESULT_OK, resultIntent);

@@ -113,7 +113,12 @@ public class EventDetails extends AppCompatActivity {
             Event updatedEvent = (Event) data.getSerializableExtra("updatedEvent");
             // Making sure we are getting an event object back from the event update page. (Otherwise display a toast error.)
             if (updatedEvent != null) {
+                // Updating UI with the updated event details
                 updateEventDetailsInUI(updatedEvent);
+                // Setting the result code for this activity, so we can notify our list activity to update.
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("updatedEvent", updatedEvent); // assuming Event implements Serializable or Parcelable
+                setResult(RESULT_OK, resultIntent);
             } else {
                 Toast.makeText(this, "No updated event data received.", Toast.LENGTH_SHORT).show();
             }

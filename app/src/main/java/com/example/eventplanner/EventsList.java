@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +26,7 @@ public class EventsList extends AppCompatActivity {
     private ListView eventsList;
     private ArrayAdapter<Event> arrayAdapter;
     private ArrayList<Person> RetrievedPeople;
+    private int UPDATE_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // BOILERPLATE:
@@ -41,7 +43,7 @@ public class EventsList extends AppCompatActivity {
         RetrofitClient.getEventsHelper(retrievedEvents -> {
             List<Event> eventsData = retrievedEvents;
             // Updating our list, so we have the most up-date-content showing.
-            updateListView(eventsData);
+            updateEventListView(eventsData);
         });
 
         // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
@@ -64,7 +66,8 @@ public class EventsList extends AppCompatActivity {
             intent.putExtra("selectedEvent", selectedEvent);
             // Passing in the list of people within our database, so we can select to add in the details page.
             intent.putExtra("retrievedPeople", RetrievedPeople);
-            startActivity(intent);
+            // Start the activity and expect a result back if an event has been updated.
+            startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
 
         // Back button Welcome page. (MAIN)
@@ -73,15 +76,29 @@ public class EventsList extends AppCompatActivity {
             finish();
         });
     }
-    private void updateListView(List<Event> events) {
+
+    private void updateEventListView(List<Event> events) {
         // Create a list of strings to display in the ListView
         List<Event> eventObjects = new ArrayList<>();
         for (Event event : events) {
             eventObjects.add(event);
         }
-
         // Creating a new adapter with the new data, and attaching it to the already created ListView (eventslist).
         arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, eventObjects);
         eventsList.setAdapter(arrayAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK && data.hasExtra("updatedEvent")) {
+            RetrofitClient.getEventsHelper(retrievedEvents -> {
+                List<Event> eventsData = retrievedEvents;
+                // Updating our list, so we have the most up-date-content after updating an event.
+                updateEventListView(eventsData);
+            });
+        }else{
+            System.out.println("Event wasn't updated so nothing to update.");
+        }
     }
 }
