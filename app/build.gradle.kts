@@ -39,7 +39,10 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     // Including necessary JSON serialisation dependency:
     implementation("com.google.code.gson:gson:2.10.1")
-    // Including retrofit library for simplifying network requests.
+    // Including retrofit and okhttp libraries for simplifying network requests.
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson converter for Retrofit
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    // Including swipe to refresh so to allow the user to refresh content.
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01");
 }

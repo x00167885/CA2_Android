@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.eventplanner.API.RetrofitClient;
 import com.example.eventplanner.Models.Event;
@@ -39,23 +41,8 @@ public class EventsList extends AppCompatActivity {
             return insets;
         });
 
-        // Calling API to retrieve all events:
-        RetrofitClient.getEventsHelper(retrievedEvents -> {
-            List<Event> eventsData = retrievedEvents;
-            // Updating our list, so we have the most up-date-content showing.
-            updateEventListView(eventsData);
-        });
-
-        // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
-        RetrofitClient.getPeopleHelper(retrievedPeople ->{
-            RetrievedPeople = retrievedPeople;
-        });
-
         // Listing out the events.
         eventsList = findViewById(R.id.eventsList);
-        // Setting the listview to empty by default (before giving it a populated adapter).
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, new ArrayList<>());
-        eventsList.setAdapter(arrayAdapter);
 
         // So we can click on an event from the list.
         eventsList.setOnItemClickListener((parent, view, position, id) -> {
@@ -68,6 +55,18 @@ public class EventsList extends AppCompatActivity {
             intent.putExtra("retrievedPeople", RetrievedPeople);
             // Start the activity and expect a result back if an event has been updated.
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
+        });
+
+        // Adding a swipe to refresh layout to the list, allowing the user to refresh the event content from the API.
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateEvents();
+                updatePeople();
+                Toast.makeText(getApplicationContext(), "Refreshing Events and People.", Toast.LENGTH_LONG).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
         });
 
         // Back button Welcome page. (MAIN)
@@ -84,6 +83,23 @@ public class EventsList extends AppCompatActivity {
             // Start the activity and expect a result back if an event has been updated.
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
+
+        // API CALLS AFTER VIEWS HAVE ALREADY BEEN CREATED.
+
+        // Checking if we already have events, and pulling them down if we don't have any.
+        if(RetrofitClient.retrievedEvents.isEmpty()){
+            // Calling API to retrieve all events:
+            updateEvents();
+        } else {
+            updateEventListView(RetrofitClient.retrievedEvents);
+        }
+
+        if(RetrofitClient.retrievedPeople.isEmpty()){
+            // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
+            updatePeople();
+        } else {
+            RetrievedPeople = (ArrayList<Person>) RetrofitClient.retrievedPeople;
+        }
     }
 
     private void updateEventListView(List<Event> events) {
@@ -111,5 +127,24 @@ public class EventsList extends AppCompatActivity {
                 System.out.println("No Event was added or updated so no need to refresh.");
             }
         }
+    }
+
+    private void updateEvents(){
+        RetrofitClient.getEventsHelper(retrievedEvents -> {
+            List<Event> eventsData = retrievedEvents;
+            // Updating our list, so we have the most up-date-content showing.
+            updateEventListView(eventsData);
+            // Storing the retrieved events so as to not make needless requests.
+            RetrofitClient.retrievedEvents = eventsData;
+        });
+    }
+
+    private void updatePeople(){
+        // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
+        RetrofitClient.getPeopleHelper(retrievedPeople ->{
+            RetrievedPeople = retrievedPeople;
+            // Storing the retrieved people so as to not make needless requests.
+            RetrofitClient.retrievedPeople = retrievedPeople;
+        });
     }
 }

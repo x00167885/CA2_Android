@@ -1,7 +1,6 @@
 package com.example.eventplanner.API;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.eventplanner.Models.Event;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,20 +20,42 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     private static Retrofit retrofit = null;
     private static final String BASE_URL = "https://ead2-ca2-api.azurewebsites.net/"; // Our API hosted on Azure.
+    public static List<Event> retrievedEvents = new ArrayList<>();
+    public static List<Person> retrievedPeople = new ArrayList<>();;
 
-    // WE ARE USING OUR API SERVICE TO KEEP TRACK OF ALL REQUESTED OBJECTS, PREVENTING REDUNDANT REQUESTS:
-    private static ArrayList eventsList = null;
-
+    // API Service:
     public static APIService getApiService() {
         // If retrofit is not yet initialised to be used within our application, we must do so.
         if (retrofit == null) {
+            // Specifying and building the okHttpClient to be used, allows for interceptor below.
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(chain -> { // Adding an interceptor for retries (Allowing database to boot up in azure).
+                        okhttp3.Request request = chain.request();
+                        okhttp3.Response response = chain.proceed(request);
+                        System.out.println("MAKING REQUEST");
+                        int tryCount = 0;
+                        while (!response.isSuccessful() && tryCount < 15) {
+                            tryCount++;
+                            try {
+                                Thread.sleep(2000);   // Adding a delay of 2 seconds, between each retry.
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                            response = chain.proceed(request);
+                        }
+                        return response;
+                    }).build();
+            // Finally creating retrofit client to provide API interaction abstraction.
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create()) // Using GSON to parse response.
                     .build();
         }
         return retrofit.create(APIService.class);
     }
+
+    // API Service HELPER FUNCTIONS:
 
     // Person Specific endpoint helpers:
 
@@ -49,7 +71,7 @@ public class RetrofitClient {
             }
             @Override
             public void onFailure(Call<List<Person>> call, Throwable t) {
-                Log.e("PeopleList", "Error fetching people" + t);
+                System.out.println("Error fetching people" + t);
             }
         });
     };
@@ -72,7 +94,7 @@ public class RetrofitClient {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 // Handle failure such as a network error
-                Log.e("EventsList", "Error adding person to event", t);
+                System.out.println("Error adding person to event" + t);
             }
         });
     }
@@ -90,7 +112,7 @@ public class RetrofitClient {
             }
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
-                Log.e("EventsList", "Error fetching events" + t);
+                System.out.println("Error fetching events" + t);
             }
         });
     }
@@ -106,7 +128,7 @@ public class RetrofitClient {
             }
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
-                Log.e("Event", "Error fetching event" + t);
+                System.out.println("Error fetching event" + t);
             }
         });
     }
