@@ -140,16 +140,16 @@ public class RetrofitClient {
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if (response.isSuccessful()) {
                     // Notify the user of successfully adding an event.
-                    Toast.makeText(context, "Event updated successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Event created successfully!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
-                    Toast.makeText(context, "Update failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Creation failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.
-                Toast.makeText(context, "Update failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Creation failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -179,6 +179,28 @@ public class RetrofitClient {
             public void onFailure(Call<Event> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.
                 Toast.makeText(context, "Update failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Adding an Event endpoint.
+    public static void deleteEventHelper(Context context, int eventId, Consumer<String> onEventDeletionSuccess){
+        getApiService().deleteEvent(eventId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Notify the user of successfully adding an event.
+                    onEventDeletionSuccess.accept(response.message());
+                    Toast.makeText(context, "Event deleted successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Notify the user that there was a problem.
+                    Toast.makeText(context, "Delete failed." + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // The call failed to execute. Handle the failure, typically an IOException.
+                Toast.makeText(context, "Delete failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

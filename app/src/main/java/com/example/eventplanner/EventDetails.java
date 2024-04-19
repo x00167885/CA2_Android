@@ -1,5 +1,6 @@
 package com.example.eventplanner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,6 +31,7 @@ public class EventDetails extends AppCompatActivity {
     private ArrayAdapter<Person> arrayAdapter;
     private int UPDATE_REQUEST_CODE = 1;
     private boolean isUserInteracted = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +80,7 @@ public class EventDetails extends AppCompatActivity {
                     });
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // Probably don't need this....
@@ -104,6 +108,12 @@ public class EventDetails extends AppCompatActivity {
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
 
+        // Button to go to delete an event.
+        Button buttonDeleteEvent = findViewById(R.id.delete_event_button);
+        buttonDeleteEvent.setOnClickListener(v -> {
+            showDeleteConfirmationDialog(selectedEvent);
+        });
+
         // Button to go to the events list.
         Button eventsListLink = findViewById(R.id.back_to_event_list);
         eventsListLink.setOnClickListener(v -> {
@@ -122,7 +132,7 @@ public class EventDetails extends AppCompatActivity {
                 updateEventDetailsInUI(updatedEvent);
                 // Setting the result code for this activity, so we can notify our list activity to update.
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("updatedEvent", updatedEvent); // assuming Event implements Serializable or Parcelable
+                resultIntent.putExtra("updatedEvent", updatedEvent);
                 setResult(RESULT_OK, resultIntent);
             } else {
                 Toast.makeText(this, "No updated event data received.", Toast.LENGTH_SHORT).show();
@@ -143,10 +153,32 @@ public class EventDetails extends AppCompatActivity {
     }
 
     // Updating event attendees list when we add a person to the event.
-    private void updateEventAttendees(Event event){
+    private void updateEventAttendees(Event event) {
         // Updating the list of people when adding a person to an event.
         AttendeeList = findViewById(R.id.attendee_list);
         arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, event.getEventsPeople());
         AttendeeList.setAdapter(arrayAdapter);
+    }
+
+    // Showing a delete confirmation dialog for when the user chooses to delete the event.
+    private void showDeleteConfirmationDialog(Event event) {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Delete") // Optional: set a title for the dialog
+                .setMessage("Are you sure you want to delete this item?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button_yes) {
+                        RetrofitClient.deleteEventHelper(getApplicationContext(), event.getId(), deletionConfirmation -> {
+                            // Setting the result code for this activity, because we just deleted the event for this page.
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("deletedEvent", "Event Deleted");
+                            setResult(RESULT_OK, resultIntent);
+                            // Finished with this event, go back to event list and refresh.
+                            finish();
+                        });
+                    }
+                })
+                .setNegativeButton("No", null) // null listener means just dismiss the dialog
+                .show();
     }
 }

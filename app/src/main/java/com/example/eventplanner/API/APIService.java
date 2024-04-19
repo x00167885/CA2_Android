@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -26,6 +27,9 @@ public interface APIService {
 
     @PUT("api/Events/{id}")
     Call<Event> updateEvent(@Path("id") int id, @Body Event event);
+
+    @DELETE("api/Events/{id}")
+    Call<Void> deleteEvent(@Path("id") int id);
 
     // People Related Calls:
     @GET("api/Events/People")
