@@ -16,6 +16,7 @@ public class Person implements Serializable {
     private List<Event> eventsPeople;
 
     // Constructor
+    public Person(){}
     public Person(String name_in, int age_in){} // NEED THIS JUST FOR TESTING
 
     // Getters
