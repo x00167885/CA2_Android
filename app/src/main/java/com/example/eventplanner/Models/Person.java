@@ -15,6 +15,9 @@ public class Person implements Serializable {
     @SerializedName("eventsPeople")
     private List<Event> eventsPeople;
 
+    // Constructor
+    public Person(String name_in, int age_in){} // NEED THIS JUST FOR TESTING
+
     // Getters
     public int getId() {
         return personId;
