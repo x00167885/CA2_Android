@@ -3,9 +3,13 @@ package com.example.eventplanner;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,8 +26,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class UpdateEvent extends AppCompatActivity {
-    private EditText editTextTitle, editTextDate, editTextDescription;
+    private EditText editTextTitle, editTextDate, editTextDescription, editTextPrice;
     private Button buttonUpdate;
+    private Event.EventType selectedEventType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,7 @@ public class UpdateEvent extends AppCompatActivity {
         editTextTitle = findViewById(R.id.update_event_name); // Replace with actual ID from your layout
         editTextDate = findViewById(R.id.update_event_date);   // Replace with actual ID from your layout
         editTextDescription = findViewById(R.id.update_event_description); // Replace with actual ID from your layout
+        editTextPrice = findViewById(R.id.update_event_price);
         // Adding a date picker:
         editTextDate.setOnClickListener(v -> {
             // Use the current date as the default date in the picker
@@ -57,6 +63,21 @@ public class UpdateEvent extends AppCompatActivity {
             datePickerDialog.show();
         });
 
+        // Selecting Event Type Spinner
+        Spinner eventTypeSpinner = findViewById(R.id.update_event_type_spinner);
+        ArrayAdapter<Event.EventType> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Event.EventType.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        eventTypeSpinner.setAdapter(adapter);
+        eventTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedEventType = (Event.EventType) parent.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         // Update Event button.
         buttonUpdate = findViewById(R.id.update_event_button);
         buttonUpdate.setOnClickListener(v -> {
@@ -64,17 +85,21 @@ public class UpdateEvent extends AppCompatActivity {
             String title = editTextTitle.getText().toString();
             String date = editTextDate.getText().toString();
             String description = editTextDescription.getText().toString();
+            String price = editTextPrice.getText().toString();
+            String eventType = selectedEventType.toString();
             // Check if the user has actually entered the data
-            if(title.isEmpty() || date.isEmpty() || description.isEmpty()) {
+            if(title.isEmpty() || date.isEmpty() || description.isEmpty() || price.isEmpty() || eventType.isEmpty()) {
                 Toast.makeText(UpdateEvent.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                 return;
-            }
+            };
             // Getting the event we passed in from the details page.
             Event eventToUpdate = (Event) getIntent().getSerializableExtra("eventDetails");
             // Now you can use these values to make an API call
             eventToUpdate.setTitle(title);
             eventToUpdate.setDate(date);
             eventToUpdate.setDescription(description);
+            eventToUpdate.setPrice(Float.parseFloat(price));
+            eventToUpdate.setType(selectedEventType);
             // Assuming you have a method to update the event
             updateEvent(eventToUpdate);
         });
@@ -94,6 +119,8 @@ public class UpdateEvent extends AppCompatActivity {
         eventForUpdate.setTitle(event.getTitle());
         eventForUpdate.setDate(event.getDate());
         eventForUpdate.setDescription(event.getDescription());
+        eventForUpdate.setPrice(event.getPrice());
+        eventForUpdate.setType(event.getType());
         // Set an empty people's list to not confuse Entity Framework. (WE ARE ONLY UPDATING THE EVENTS DETAILS NOT THE PEOPLE PART OF THE EVENT)
         eventForUpdate.setPeople(new ArrayList<>());
 
