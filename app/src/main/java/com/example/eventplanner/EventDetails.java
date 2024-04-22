@@ -55,6 +55,10 @@ public class EventDetails extends AppCompatActivity {
         TextView eventDateView = findViewById(R.id.event_date);
         eventDateView.setText(selectedEvent.getDate());
 
+        // Getting the date of the Event
+        TextView eventPriceView = findViewById(R.id.event_price_text_view);
+        eventPriceView.setText(Float.toString(selectedEvent.getPrice()));
+
         // Getting the description of the Event
         TextView eventDescriptionView = findViewById(R.id.event_description);
         eventDescriptionView.setText(selectedEvent.getDescription());

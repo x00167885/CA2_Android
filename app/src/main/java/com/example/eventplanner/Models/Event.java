@@ -15,6 +15,8 @@ public class Event implements Serializable { // Need to make this serializable i
     private String date;
     @SerializedName("description")
     private String description;
+    @SerializedName("price")
+    private float price;
     @SerializedName("eventsPeople")
     private List<Person> eventsPeople;
 
@@ -38,6 +40,9 @@ public class Event implements Serializable { // Need to make this serializable i
     public String getDate() { return date; }
     public String getDescription() { return description; }
     public List<Person> getEventsPeople() { return eventsPeople; }
+    public float getPrice() {
+        return price;
+    }
 
     // Setters
     public void setId(int eventId) {
@@ -51,6 +56,9 @@ public class Event implements Serializable { // Need to make this serializable i
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public void setPrice(float price) {
+        this.price = price;
     }
     public void setPeople(List<Person> people) {
         this.eventsPeople = people;

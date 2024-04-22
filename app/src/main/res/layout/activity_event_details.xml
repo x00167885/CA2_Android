@@ -20,6 +20,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.074" />
 
+    <TextView
+        android:id="@+id/event_price_text_view"
+        android:layout_width="78dp"
+        android:layout_height="33dp"
+        android:text="Event Price"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222" />
+
     <Button
         android:id="@+id/back_to_event_list"
         android:layout_width="128dp"
@@ -63,18 +77,19 @@
         android:id="@+id/event_date"
         android:layout_width="161dp"
         android:layout_height="33dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Date Of Event"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.104"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_name_text_view" />
 
     <ListView
         android:id="@+id/attendee_list"
-        android:layout_width="390dp"
-        android:layout_height="262dp"
+        android:layout_width="393dp"
+        android:layout_height="261dp"
         android:layout_marginTop="140dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
@@ -83,16 +98,17 @@
 
     <TextView
         android:id="@+id/event_description"
-        android:layout_width="433dp"
-        android:layout_height="87dp"
+        android:layout_width="410dp"
+        android:layout_height="55dp"
         android:text="Description of Event"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/attendee_list"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_date"
-        app:layout_constraintVertical_bias="0.351" />
+        app:layout_constraintVertical_bias="0.342" />
 
     <Spinner
         android:id="@+id/people_spinner"
@@ -118,6 +134,14 @@
         app:layout_constraintTop_toBottomOf="@id/event_name_text_view"
         app:layout_constraintVertical_bias="0.229" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price (€):"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="199dp"
+        tools:layout_editor_absoluteY="156dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
