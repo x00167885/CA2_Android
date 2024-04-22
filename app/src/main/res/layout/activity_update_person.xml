@@ -2,16 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/add_event"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddEvent">
+    tools:context=".UpdatePerson">
+
 
     <Button
-        android:id="@+id/add_event_button"
+        android:id="@+id/update_person_button"
         android:layout_width="159dp"
         android:layout_height="74dp"
-        android:text="Add Event"
+        android:text="Update Person"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,28 +22,28 @@
         app:layout_constraintVertical_bias="0.833" />
 
     <EditText
-        android:id="@+id/add_event_name"
+        android:id="@+id/update_person_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="111dp"
         android:layout_marginBottom="79dp"
         android:ems="10"
-        android:hint="Event Name"
+        android:hint="Update Name"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.402"
+        app:layout_constraintHorizontal_bias="0.452"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.028" />
 
     <EditText
-        android:id="@+id/add_event_date"
+        android:id="@+id/update_person_age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:focusable="false"
-        android:hint="Event Date"
+        android:hint="Update Age"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,22 +52,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.599" />
 
-    <EditText
-        android:id="@+id/add_event_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Event Description"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.452"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.395" />
-
     <Button
-        android:id="@+id/back_to_event_list"
+        android:id="@+id/back_to_person_details"
         android:layout_width="124dp"
         android:layout_height="74dp"
         android:layout_marginStart="52dp"

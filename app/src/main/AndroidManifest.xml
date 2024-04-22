@@ -15,6 +15,9 @@
         android:theme="@style/Theme.EventPlanner"
         tools:targetApi="31">
         <activity
+            android:name=".UpdatePerson"
+            android:exported="false" />
+        <activity
             android:name=".PersonDetails"
             android:exported="false" />
         <activity
