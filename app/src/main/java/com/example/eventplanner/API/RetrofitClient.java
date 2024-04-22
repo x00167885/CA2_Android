@@ -184,28 +184,27 @@ public class RetrofitClient {
     }
 
     // Updating the event details endpoint.
-    public static void updatePersonHelper(Context context, Event originalEvent, Event eventForUpdate, Consumer<Event> onEventUpdateSuccess){
-        getApiService().updateEvent(originalEvent.getId(), eventForUpdate).enqueue(new Callback<Event>() {
+    public static void updatePersonHelper(Context context, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess){
+        getApiService().updatePerson(originalPerson.getId(), personForUpdate).enqueue(new Callback<Person>() {
             @Override
-            public void onResponse(Call<Event> call, Response<Event> response) {
+            public void onResponse(Call<Person> call, Response<Person> response) {
                 if (response.isSuccessful()) {
-                    // Modifying the current event, and sending it back as the result, because we don't get anything back in response.
-                    originalEvent.setTitle(eventForUpdate.getTitle());
-                    originalEvent.setId(eventForUpdate.getId());
-                    originalEvent.setPeople(originalEvent.getEventsPeople());
-                    originalEvent.setDate(eventForUpdate.getDate());
-                    originalEvent.setDescription(eventForUpdate.getDescription());
+                    // Modifying the current person
+                    originalPerson.setName(personForUpdate.getName());
+                    originalPerson.setId(personForUpdate.getId());
+                    originalPerson.setAge(personForUpdate.getAge());
+//                    originalEvent.setDescription(eventForUpdate.getDescription());
                     // Telling our Activity that it needs to accept our updated event as an input.
-                    onEventUpdateSuccess.accept(originalEvent);
+                    onPersonUpdateSuccess.accept(originalPerson);
                     // Notify the user of the successful update.
-                    Toast.makeText(context, "Event updated successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Person updated successfully! Well done!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
-                    Toast.makeText(context, "Update failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Update failed. Womp womp" + response.errorBody(), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
-            public void onFailure(Call<Event> call, Throwable t) {
+            public void onFailure(Call<Person> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.
                 Toast.makeText(context, "Update failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

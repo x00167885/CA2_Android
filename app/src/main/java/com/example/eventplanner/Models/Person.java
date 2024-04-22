@@ -31,7 +31,7 @@ public class Person implements Serializable {
     public List<Event> getEventsPeople() { return eventsPeople; }
 
     // Setters
-    public void setPersonId(int personId) {
+    public void setId(int personId) {
         this.personId = personId;
     }
     public void setName(String name) {
