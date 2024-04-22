@@ -18,7 +18,7 @@ import com.example.eventplanner.Models.Person;
 public class UpdatePerson extends AppCompatActivity {
 
     private EditText editTextName, editTextAge;
-    private Button buttonUpdate;
+    private Button buttonUpdate, buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,13 @@ public class UpdatePerson extends AppCompatActivity {
         // Initialize your EditText fields
         editTextName = findViewById(R.id.update_person_name); // Replace with actual ID from your layout
         editTextAge = findViewById(R.id.update_person_age);   // Replace with actual ID from xml
+
+        buttonBack = findViewById(R.id.back_to_person_details); // Initialize the back button
+
+        buttonBack.setOnClickListener(v -> {
+            // This will just close the current activity and go back to the previous one in the activity stack
+            finish();
+        });
 
 
         // Update Person button.
