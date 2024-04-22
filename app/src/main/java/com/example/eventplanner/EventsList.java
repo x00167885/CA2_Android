@@ -76,7 +76,7 @@ public class EventsList extends AppCompatActivity {
         });
 
         // Create Event button.
-        Button addEventLink = findViewById(R.id.add_event_button);
+        Button addEventLink = findViewById(R.id.add_event_button_link);
         addEventLink.setOnClickListener(v -> {
             // Going to go to the selected events details page from here, below:
             Intent intent = new Intent(getApplicationContext(), AddEvent.class);

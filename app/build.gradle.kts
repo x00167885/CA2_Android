@@ -51,6 +51,8 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.4.0")
     androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
+    androidTestImplementation("org.mockito:mockito-android:3.+") // use the latest version
+
     // Including Junit for regular tests not associated with activity components / views.
     testImplementation(libs.junit)
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.0")

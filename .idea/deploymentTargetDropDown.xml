@@ -5,19 +5,19 @@
       <entry key="EventDetailsTest">
         <State />
       </entry>
-      <entry key="addEventTest()">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="checkEventDetailsDisplay()">
+      <entry key="testAddEventAndCheckResultInEventsList()">
         <State />
       </entry>
-      <entry key="clickDeleteButtonAndConfirm()">
+      <entry key="testCancelButton()">
         <State />
       </entry>
-      <entry key="ensureDatePickerDialogOpens()">
+      <entry key="testDatePickerDialog()">
+        <State />
+      </entry>
+      <entry key="testUpdateEventAndCheckResultInEventDetails()">
         <State />
       </entry>
     </value>
