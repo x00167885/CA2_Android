@@ -183,6 +183,35 @@ public class RetrofitClient {
         });
     }
 
+    // Updating the event details endpoint.
+    public static void updatePersonHelper(Context context, Event originalEvent, Event eventForUpdate, Consumer<Event> onEventUpdateSuccess){
+        getApiService().updateEvent(originalEvent.getId(), eventForUpdate).enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                if (response.isSuccessful()) {
+                    // Modifying the current event, and sending it back as the result, because we don't get anything back in response.
+                    originalEvent.setTitle(eventForUpdate.getTitle());
+                    originalEvent.setId(eventForUpdate.getId());
+                    originalEvent.setPeople(originalEvent.getEventsPeople());
+                    originalEvent.setDate(eventForUpdate.getDate());
+                    originalEvent.setDescription(eventForUpdate.getDescription());
+                    // Telling our Activity that it needs to accept our updated event as an input.
+                    onEventUpdateSuccess.accept(originalEvent);
+                    // Notify the user of the successful update.
+                    Toast.makeText(context, "Event updated successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Notify the user that there was a problem.
+                    Toast.makeText(context, "Update failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                // The call failed to execute. Handle the failure, typically an IOException.
+                Toast.makeText(context, "Update failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // Adding an Event endpoint.
     public static void deleteEventHelper(Context context, int eventId, Consumer<String> onEventDeletionSuccess){
         getApiService().deleteEvent(eventId).enqueue(new Callback<Void>() {

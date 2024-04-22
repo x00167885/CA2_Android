@@ -51,7 +51,7 @@ public class UpdatePerson extends AppCompatActivity {
             personToUpdate.setName(name);
             personToUpdate.setAge(Integer.parseInt(age));
             // use the updatePerson method
-            updatePerson(personToUpdate);
+            //updatePerson(personToUpdate);
         });
     }
 }
