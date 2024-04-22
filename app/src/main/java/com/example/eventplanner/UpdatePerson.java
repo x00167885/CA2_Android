@@ -12,12 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-//import com.example.eventplanner.Models.Event;
 import com.example.eventplanner.API.RetrofitClient;
-import com.example.eventplanner.Models.Event;
 import com.example.eventplanner.Models.Person;
-
-import java.util.ArrayList;
 
 public class UpdatePerson extends AppCompatActivity {
 
@@ -53,15 +49,18 @@ public class UpdatePerson extends AppCompatActivity {
             }
             // Getting the person we passed in from the details page.
             Person personToUpdate = (Person) getIntent().getSerializableExtra("personDetails");
+            // Getting the event id that this person is currently attending:
+            int eventId = getIntent().getIntExtra("eventId", -1);
+            System.out.println(eventId);
             // Now you can use these values to make an API call
             personToUpdate.setName(name);
             personToUpdate.setAge(Integer.parseInt(age));
             // use the updatePerson method
-            updatePerson(personToUpdate);
+            updatePerson(personToUpdate, eventId);
         });
     }
 
-    private void updatePerson(Person person) {
+    private void updatePerson(Person person, int eventId) {
         // Create a new Event object with the details from the original event
         Person personForUpdate = new Person();
         personForUpdate.setId(person.getId());
@@ -72,7 +71,7 @@ public class UpdatePerson extends AppCompatActivity {
 //        personForUpdate.setPeople(new ArrayList<>());
 
         // Make the API call to update the event with the new information
-        RetrofitClient.updatePersonHelper(getApplicationContext(), person, personForUpdate, updatedPerson -> {
+        RetrofitClient.updatePersonHelper(getApplicationContext(), eventId, person, personForUpdate, updatedPerson -> {
             // Pass the updated event back to the previous activity, and set the result of the activity to OK!
             Intent resultIntent = new Intent();
             resultIntent.putExtra("updatedPerson", updatedPerson); // Consume the updatedEvent from the API service and pass it back to the details page.

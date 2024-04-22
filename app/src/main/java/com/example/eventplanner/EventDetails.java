@@ -108,7 +108,8 @@ public class EventDetails extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), PersonDetails.class);
             // Passing in the selected event to the event details page:
             intent.putExtra("selectedPerson", selectedPerson);
-            System.out.println("WE got here.");
+            // Passing in the event id for updating person object.
+            intent.putExtra("eventId", selectedEvent.getId());
             // Passing in the list of people within our database, so we can select to add in the details page.            // Start the activity and expect a result back if an event has been updated.
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });

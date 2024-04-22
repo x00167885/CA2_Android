@@ -1,5 +1,6 @@
 package com.example.eventplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,7 +35,8 @@ public class PersonDetails extends AppCompatActivity {
 
         // Retrieve the data for the people
         Person selectedPerson = (Person) getIntent().getSerializableExtra("selectedPerson");
-        System.out.println(selectedPerson);
+        // Retrieving event id for updating person.
+        int eventId = getIntent().getIntExtra("eventId", -1);
 //
 //        // Getting the name of the person
         TextView personNameTextView = findViewById(R.id.person_name_text_view);
@@ -68,15 +70,17 @@ public class PersonDetails extends AppCompatActivity {
 //        });
 
         // Button to go to edit event page.
-//        Button buttonEditEvent = findViewById(R.id.goto_update_person);
-//        buttonEditEvent.setOnClickListener(v -> {
-////            // Create an intent to start the UpdateEvent activity
-////            Intent intent = new Intent(PersonDetails.this, UpdatePerson.class);
-////            // You can also pass the entire event object if the Event class implements Serializable
-////            intent.putExtra("eventDetails", selectedEvent);
-////            // Start the activity and expect a result back.
-////            startActivityForResult(intent, UPDATE_REQUEST_CODE);
-//        });
+        Button buttonEditEvent = findViewById(R.id.goto_update_person);
+        buttonEditEvent.setOnClickListener(v -> {
+            // Create an intent to start the UpdateEvent activity
+            Intent intent = new Intent(PersonDetails.this, UpdatePerson.class);
+            // You can also pass the entire event object if the Event class implements Serializable
+            intent.putExtra("personDetails", selectedPerson);
+            // Passing in the event id for updating person object.
+            intent.putExtra("eventId", eventId);
+            // Start the activity and expect a result back.
+            startActivityForResult(intent, UPDATE_REQUEST_CODE);
+        });
 
         // Button to go to delete a person.
 //        Button buttonDeleteEvent = findViewById(R.id.delete_event_button);

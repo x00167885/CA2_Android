@@ -41,7 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:focusable="false"
         android:hint="Update Event Date"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"

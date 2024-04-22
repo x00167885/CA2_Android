@@ -184,8 +184,8 @@ public class RetrofitClient {
     }
 
     // Updating the event details endpoint.
-    public static void updatePersonHelper(Context context, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess){
-        getApiService().updatePerson(originalPerson.getId(), personForUpdate).enqueue(new Callback<Person>() {
+    public static void updatePersonHelper(Context context, int eventId, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess){
+        getApiService().updatePerson(eventId, originalPerson.getId(), personForUpdate).enqueue(new Callback<Person>() {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
                 if (response.isSuccessful()) {
