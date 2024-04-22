@@ -31,7 +31,7 @@ public class UpdatePerson extends AppCompatActivity {
 
         // Initialize your EditText fields
         editTextName = findViewById(R.id.update_person_name); // Replace with actual ID from your layout
-        editTextAge = findViewById(R.id.update_person_age);   // Replace with actual ID from your layout
+        editTextAge = findViewById(R.id.update_person_age);   // Replace with actual ID from xml
 
 
         // Update Person button.
@@ -49,7 +49,7 @@ public class UpdatePerson extends AppCompatActivity {
             Person personToUpdate = (Person) getIntent().getSerializableExtra("personDetails");
             // Now you can use these values to make an API call
             personToUpdate.setName(name);
-            personToUpdate.setAge(age);
+            personToUpdate.setAge(Integer.parseInt(age));
             // use the updatePerson method
             updatePerson(personToUpdate);
         });
