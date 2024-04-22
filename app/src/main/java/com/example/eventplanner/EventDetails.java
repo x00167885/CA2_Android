@@ -97,6 +97,17 @@ public class EventDetails extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, selectedEvent.getEventsPeople());
         AttendeeList.setAdapter(arrayAdapter);
 
+        // So we can click on an person from the list.
+        AttendeeList.setOnItemClickListener((parent, view, position, id) -> {
+            Person selectedPerson = arrayAdapter.getItem(position);
+            // Going to go to the selected events details page from here, below:
+            Intent intent = new Intent(getApplicationContext(), PersonDetails.class);
+            // Passing in the selected event to the event details page:
+            intent.putExtra("selectedPerson", selectedPerson);
+            // Passing in the list of people within our database, so we can select to add in the details page.            // Start the activity and expect a result back if an event has been updated.
+            startActivityForResult(intent, UPDATE_REQUEST_CODE);
+        });
+
         // Button to go to edit event page.
         Button buttonEditEvent = findViewById(R.id.goto_update_event);
         buttonEditEvent.setOnClickListener(v -> {
