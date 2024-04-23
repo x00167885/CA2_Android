@@ -41,6 +41,8 @@ public interface APIService {
     @DELETE("api/Events/{eventId}/Person/{personId}")
     Call<Void> deletePerson(@Path("eventId") int eventId, @Path("personId") int personId);
 
+    @POST("api/Events/Person")
+    Call<Person> addPerson(@Body Person person);
 
     @POST("api/Events/{eventId}/Person/{personId}")
     Call<Void> addPersonToEvent(@Path("eventId") int eventId, @Path("personId") int personId);

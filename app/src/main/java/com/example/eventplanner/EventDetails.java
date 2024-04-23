@@ -89,13 +89,18 @@ public class EventDetails extends AppCompatActivity {
                         // Refreshing the current events details. USING CONSUMABLE TO CHAIN THE ASYNCHRONOUS CALLS.
                         RetrofitClient.getEventByIdHelper(chosenEvent.getId(), retrievedEvent -> {
                             updateEventAttendees(retrievedEvent);
+
                         });
                     });
+                    // Need to notify our list to update everything, so on revisiting the event details, the attendees added are 'remembered'.
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("personAddedToEvent", selectedPerson);
+                    setResult(RESULT_OK, resultIntent);
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Probably don't need this....
+
             }
         });
         // Preventing the item selector from being called on just entering the page.

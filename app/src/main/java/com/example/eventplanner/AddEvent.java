@@ -26,7 +26,6 @@ import java.util.Locale;
 
 public class AddEvent extends AppCompatActivity {
     private EditText editTextTitle, editTextDate, editTextDescription, editTextPrice;
-    private Button buttonAdd;
     private Event.EventType selectedEventType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class AddEvent extends AppCompatActivity {
         });
 
         // Add Event button.
-        buttonAdd = findViewById(R.id.add_event_button);
+        Button buttonAdd = findViewById(R.id.add_event_button);
         buttonAdd.setOnClickListener(v -> {
             // Get the values from the EditTexts
             String title = editTextTitle.getText().toString();

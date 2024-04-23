@@ -52,15 +52,12 @@ public class RetrofitClient {
                     retrievedPeople = response.body();
                 }
             }
-
             @Override
             public void onFailure(Call<List<Person>> call, Throwable t) {
                 System.out.println("Error fetching people" + t);
             }
         });
     }
-
-    ;
 
     // Adding person to event, endpoint.
     public static void addPersonToEventHelper(Context context, int eventId, int personId, Consumer<Response> onSuccess) {
@@ -77,7 +74,6 @@ public class RetrofitClient {
                     Toast.makeText(context, "Person not added to event.", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 // Handle failure such as a network error
@@ -85,6 +81,27 @@ public class RetrofitClient {
             }
         });
     }
+
+    // Adding an Event endpoint.
+    public static void addPersonHelper(Context context, Person person) {
+        getApiService().addPerson(person).enqueue(new Callback<Person>() {
+            @Override
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                if (response.isSuccessful()) {
+                    // Notify the user of successfully adding an event.
+                    Toast.makeText(context, "Person created successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Notify the user that there was a problem.
+                    Toast.makeText(context, "Creation failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     // Event Specific endpoint helpers:
 
@@ -98,7 +115,6 @@ public class RetrofitClient {
                     retrievedEvents = response.body();
                 }
             }
-
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 System.out.println("Error fetching events" + t);
@@ -115,7 +131,6 @@ public class RetrofitClient {
                     onEventRequestSuccess.accept(response.body());
                 }
             }
-
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 System.out.println("Error fetching event" + t);
@@ -136,11 +151,9 @@ public class RetrofitClient {
                     Toast.makeText(context, "Creation failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
-                // The call failed to execute. Handle the failure, typically an IOException.
-                Toast.makeText(context, "Creation failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -168,7 +181,6 @@ public class RetrofitClient {
                     Toast.makeText(context, "Update failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.

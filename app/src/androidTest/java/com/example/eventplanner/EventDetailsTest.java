@@ -36,7 +36,7 @@ public class EventDetailsTest {
     // Configuring the data we expect to see within each test.
     private Intent createIntentWithExtras() {
         Intent testIntent = new Intent();
-        Event mockEvent = new Event("Test Event", "2024-01-01", "This is a test event.");
+        Event mockEvent = new Event("Test Event", "2024-01-01", "This is a test event.", 5, Event.EventType.ARTEXHIBITION);
         List<Person> mockPeopleList = new ArrayList<>();
         mockPeopleList.add(new Person("John Doe", 3));
         testIntent.putExtra("selectedEvent", mockEvent);
