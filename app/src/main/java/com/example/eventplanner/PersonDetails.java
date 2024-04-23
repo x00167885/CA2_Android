@@ -1,12 +1,15 @@
 package com.example.eventplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -34,13 +37,14 @@ public class PersonDetails extends AppCompatActivity {
 
         // Retrieve the data for the people
         Person selectedPerson = (Person) getIntent().getSerializableExtra("selectedPerson");
-        System.out.println(selectedPerson);
-//
-//        // Getting the name of the person
+        // Retrieving event id for updating person.
+        int eventId = getIntent().getIntExtra("eventId", -1);
+
+        // Getting the name of the person
         TextView personNameTextView = findViewById(R.id.person_name_text_view);
         personNameTextView.setText(selectedPerson.getName());
-//
-//        // Getting the age of the person
+
+        // Getting the age of the person
         TextView personAgeTextView = findViewById(R.id.person_age_text_view);
         personAgeTextView.setText(Integer.toString(selectedPerson.getAge()));
 
@@ -49,12 +53,6 @@ public class PersonDetails extends AppCompatActivity {
 //        ArrayAdapter<Person> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, retrievedPeople);
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        personSpinner.setAdapter(adapter);
-
-        // NEED TO LIST ALL THE EVENTS THIS PERSON IS GOING TO.
-//        // Listing people who are going to the event.
-//        AttendeeList = findViewById(R.id.attendee_list);
-//        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, selectedEvent.getEventsPeople());
-//        AttendeeList.setAdapter(arrayAdapter);
 //
 //        // So we can click on an person from the list.
 //        AttendeeList.setOnItemClickListener((parent, view, position, id) -> {
@@ -68,15 +66,24 @@ public class PersonDetails extends AppCompatActivity {
 //        });
 
         // Button to go to edit event page.
-//        Button buttonEditEvent = findViewById(R.id.goto_update_person);
-//        buttonEditEvent.setOnClickListener(v -> {
-////            // Create an intent to start the UpdateEvent activity
-////            Intent intent = new Intent(PersonDetails.this, UpdatePerson.class);
-////            // You can also pass the entire event object if the Event class implements Serializable
-////            intent.putExtra("eventDetails", selectedEvent);
-////            // Start the activity and expect a result back.
-////            startActivityForResult(intent, UPDATE_REQUEST_CODE);
-//        });
+        Button buttonEditEvent = findViewById(R.id.goto_update_person);
+        buttonEditEvent.setOnClickListener(v -> {
+            // Create an intent to start the UpdateEvent activity
+            Intent intent = new Intent(PersonDetails.this, UpdatePerson.class);
+            // You can also pass the entire event object if the Event class implements Serializable
+            intent.putExtra("personDetails", selectedPerson);
+            // Passing in the event id for updating person object.
+            intent.putExtra("eventId", eventId);
+            // Start the activity and expect a result back.
+            startActivityForResult(intent, UPDATE_REQUEST_CODE);
+        });
+
+
+        // Button to go back to the events details.
+        Button eventsDetailsLink = findViewById(R.id.back_to_event_details);
+        eventsDetailsLink.setOnClickListener(v -> {
+            finish();
+        });
 
         // Button to go to delete a person.
 //        Button buttonDeleteEvent = findViewById(R.id.delete_event_button);
@@ -84,24 +91,7 @@ public class PersonDetails extends AppCompatActivity {
 //            showDeleteConfirmationDialog(selectedEvent);
 //        });
 
-        // Button to go back to the events details.
-        Button eventsDetailsLink = findViewById(R.id.back_to_event_details);
-        eventsDetailsLink.setOnClickListener(v -> {
-            finish();
-        });
     }
-
-    // Editing our existing event details on activity return.
-//    private void updatePersonDetailsInUI(Event event) {
-//        TextView eventNameTextView = findViewById(R.id.event_name_text_view);
-//        eventNameTextView.setText(event.getTitle());
-//
-//        TextView eventDateView = findViewById(R.id.event_date);
-//        eventDateView.setText(event.getDate());
-//
-//        TextView eventDescriptionView = findViewById(R.id.event_description);
-//        eventDescriptionView.setText(event.getDescription());
-//    }
 
     // Showing a delete confirmation dialog for when the user chooses to delete a person.
 //    private void showDeleteConfirmationDialog(Person person) {
@@ -124,4 +114,32 @@ public class PersonDetails extends AppCompatActivity {
 //                .setNegativeButton("No", null) // null listener means just dismiss the dialog
 //                .show();
 //    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            Person updatedPerson = (Person) data.getSerializableExtra("updatedPerson");
+            // Making sure we are getting an event object back from the event update page. (Otherwise display a toast error.)
+            if (updatedPerson != null) {
+                // Updating UI with the updated event details
+                updatePersonDetailsInUI(updatedPerson);
+                // Setting the result code for this activity, so we can notify our list activity to update.
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("updatedPerson", updatedPerson);
+                setResult(RESULT_OK, resultIntent);
+            } else {
+                Toast.makeText(this, "No updated person data received.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //Editing our existing event details on activity return.
+    private void updatePersonDetailsInUI(Person person) {
+        TextView personNameTextView = findViewById(R.id.person_name_text_view);
+        personNameTextView.setText(person.getName());
+
+        TextView personAgeTextView = findViewById(R.id.person_age_text_view);
+        personAgeTextView.setText(Integer.toString(person.getAge()));
+    }
 }

@@ -165,6 +165,34 @@ public class RetrofitClient {
         });
     }
 
+    // Updating the event details endpoint.
+    public static void updatePersonHelper(Context context, int eventId, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess){
+        getApiService().updatePerson(eventId, originalPerson.getId(), personForUpdate).enqueue(new Callback<Person>() {
+            @Override
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                if (response.isSuccessful()) {
+                    // Modifying the current person
+                    originalPerson.setName(personForUpdate.getName());
+                    originalPerson.setId(personForUpdate.getId());
+                    originalPerson.setAge(personForUpdate.getAge());
+//                    originalEvent.setDescription(eventForUpdate.getDescription());
+                    // Telling our Activity that it needs to accept our updated event as an input.
+                    onPersonUpdateSuccess.accept(originalPerson);
+                    // Notify the user of the successful update.
+                    Toast.makeText(context, "Person updated successfully! Well done!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Notify the user that there was a problem.
+                    Toast.makeText(context, "Update failed. Womp womp" + response.errorBody(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+                // The call failed to execute. Handle the failure, typically an IOException.
+                Toast.makeText(context, "Update failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // Adding an Event endpoint.
     public static void deleteEventHelper(Context context, int eventId, Consumer<String> onEventDeletionSuccess){
         getApiService().deleteEvent(eventId).enqueue(new Callback<Void>() {

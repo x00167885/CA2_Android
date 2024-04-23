@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/event_price_text_view"
-        android:layout_width="78dp"
+        android:layout_width="69dp"
         android:layout_height="33dp"
         android:text="Event Price"
         android:textAlignment="center"

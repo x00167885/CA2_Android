@@ -35,6 +35,9 @@ public interface APIService {
     @GET("api/Events/People")
     Call<List<Person>> getPeople();
 
+    @PUT("api/Events/{eventId}/Person/{personId}")
+    Call<Person> updatePerson(@Path("eventId") int eventId, @Path("personId") int personId, @Body Person person);
+
     @POST("api/Events/{eventId}/Person/{personId}")
     Call<Void> addPersonToEvent(@Path("eventId") int eventId, @Path("personId") int personId);
 

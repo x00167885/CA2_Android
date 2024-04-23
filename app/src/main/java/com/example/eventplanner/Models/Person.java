@@ -16,6 +16,7 @@ public class Person implements Serializable {
     private List<Event> eventsPeople;
 
     // Constructor
+    public Person(){}
     public Person(String name_in, int age_in){} // NEED THIS JUST FOR TESTING
 
     // Getters
@@ -31,7 +32,7 @@ public class Person implements Serializable {
     public List<Event> getEventsPeople() { return eventsPeople; }
 
     // Setters
-    public void setPersonId(int personId) {
+    public void setId(int personId) {
         this.personId = personId;
     }
     public void setName(String name) {
