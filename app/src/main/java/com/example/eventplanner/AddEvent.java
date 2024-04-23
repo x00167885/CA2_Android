@@ -79,6 +79,8 @@ public class AddEvent extends AppCompatActivity {
 
         // Add Event button.
         Button buttonAdd = findViewById(R.id.add_event_button);
+        buttonAdd.setText(R.string.add_event_button); // Set the button text to use the string resource (internationalisation)
+
         buttonAdd.setOnClickListener(v -> {
             // Get the values from the EditTexts
             String title = editTextTitle.getText().toString();
@@ -88,7 +90,7 @@ public class AddEvent extends AppCompatActivity {
             String eventType = selectedEventType.toString();
             // Check if the user has actually entered the data
             if(title.isEmpty() || date.isEmpty() || description.isEmpty() || price.isEmpty() || eventType.isEmpty()) {
-                Toast.makeText(AddEvent.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddEvent.this, R.string.fields_request, Toast.LENGTH_SHORT).show();
                 return;
             };
             Event newEvent = new Event(title, date, description, Float.parseFloat(price), selectedEventType);
@@ -97,6 +99,8 @@ public class AddEvent extends AppCompatActivity {
 
         // Cancel button.
         Button buttonCancel = findViewById(R.id.back_to_event_list);
+        buttonCancel.setText(R.string.cancel_button);
+
         buttonCancel.setOnClickListener(v -> {
             finish();
         });

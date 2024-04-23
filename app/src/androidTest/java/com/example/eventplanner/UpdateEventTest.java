@@ -61,7 +61,7 @@ public class UpdateEventTest {
 
         // Create the Intent that should be used to start EventDetails
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventDetails.class);
-        Event mockEvent = new Event("Mock Event", "2022-01-01", "This is a mock event.");
+        Event mockEvent = new Event("Mock Event", "2022-01-01","This is a mock event.", 12, Event.EventType.FOODFESTIVAL );
         ArrayList<Person> mockPeopleList = new ArrayList<>();
         mockPeopleList.add(new Person("John Doe", 3));
         intent.putExtra("selectedEvent", mockEvent);

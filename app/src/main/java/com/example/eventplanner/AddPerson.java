@@ -31,15 +31,18 @@ public class AddPerson extends AppCompatActivity {
         editTextName = findViewById(R.id.add_person_name);
         // Getting the age of the person
         editTextAge = findViewById(R.id.add_person_age);
+
         // Add Event button.
         Button buttonAdd = findViewById(R.id.add_person_button);
+        buttonAdd.setText(R.string.add_person_button);
+
         buttonAdd.setOnClickListener(v -> {
             // Get the values from the EditTexts
             String name = editTextName.getText().toString();
             String age = editTextAge.getText().toString();
             // Check if the user has actually entered the data
             if(name.isEmpty() || age.isEmpty()) {
-                Toast.makeText(AddPerson.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddPerson.this, R.string.fields_request, Toast.LENGTH_SHORT).show();
                 return;
             };
             Person newPerson = new Person(name, Integer.parseInt(age));
@@ -47,6 +50,7 @@ public class AddPerson extends AppCompatActivity {
         });
         // Button to go back to the events list.
         Button eventsListLink = findViewById(R.id.back_to_event_list);
+        eventsListLink.setText(R.string.back_button);
         eventsListLink.setOnClickListener(v -> {
             finish();
         });

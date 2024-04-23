@@ -53,6 +53,7 @@ public class PersonDetails extends AppCompatActivity {
 
         // Button to go to edit event page.
         Button buttonEditEvent = findViewById(R.id.goto_update_person);
+        buttonEditEvent.setText(R.string.update_event_button);
         buttonEditEvent.setOnClickListener(v -> {
             // Create an intent to start the UpdateEvent activity
             Intent intent = new Intent(PersonDetails.this, UpdatePerson.class);
@@ -65,12 +66,14 @@ public class PersonDetails extends AppCompatActivity {
         });
 
         Button buttonDeletePerson = findViewById(R.id.delete_person_button);
+        buttonDeletePerson.setText(R.string.delete_person_button);
         buttonDeletePerson.setOnClickListener(v -> {
             showDeleteConfirmationDialog(selectedPerson, eventId);
         });
 
         // Button to go back to the events details.
         Button eventsDetailsLink = findViewById(R.id.back_to_event_details);
+        eventsDetailsLink.setText(R.string.back_button);
         eventsDetailsLink.setOnClickListener(v -> {
             finish();
         });
@@ -79,9 +82,9 @@ public class PersonDetails extends AppCompatActivity {
     //     Showing a delete confirmation dialog for when the user chooses to delete a person.
     private void showDeleteConfirmationDialog(Person person, int eventId) {
         new AlertDialog.Builder(this)
-                .setTitle("Confirm Delete") // Optional: set a title for the dialog
-                .setMessage("Are you sure you want to delete this person?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.delete_confirmation_title) // Optional: set a title for the dialog
+                .setMessage(R.string.delete_confirmation_message)
+                .setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int button_yes) {
                         RetrofitClient.deletePersonHelper(getApplicationContext(), eventId, person.getId(), deletionConfirmation -> {
@@ -94,7 +97,7 @@ public class PersonDetails extends AppCompatActivity {
                         });
                     }
                 })
-                .setNegativeButton("No", null) // null listener means just dismiss the dialog
+                .setNegativeButton(R.string.no_button, null) // null listener means just dismiss the dialog
                 .show();
     }
 
@@ -110,7 +113,7 @@ public class PersonDetails extends AppCompatActivity {
                 resultIntent.putExtra("updatedPerson", updatedPerson);
                 setResult(RESULT_OK, resultIntent);
             } else {
-                Toast.makeText(this, "No updated person data received.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.data_received, Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -80,6 +80,7 @@ public class UpdateEvent extends AppCompatActivity {
 
         // Update Event button.
         buttonUpdate = findViewById(R.id.update_event_button);
+        buttonUpdate.setText(R.string.update_event_button);
         buttonUpdate.setOnClickListener(v -> {
             // Get the values from the EditTexts
             String title = editTextTitle.getText().toString();
@@ -106,6 +107,7 @@ public class UpdateEvent extends AppCompatActivity {
 
         // Update button to update the event.
         Button buttonCancel = findViewById(R.id.back_to_event_details);
+        buttonCancel.setText(R.string.cancel_button);
         buttonCancel.setOnClickListener(v -> {
             finish();
         });
