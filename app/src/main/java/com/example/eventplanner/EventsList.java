@@ -68,12 +68,14 @@ public class EventsList extends AppCompatActivity {
 
         // Back button Welcome page. (MAIN)
         Button eventsListLink = findViewById(R.id.back_to_welcome_page);
+        eventsListLink.setText(R.string.back_button);
         eventsListLink.setOnClickListener(v -> {
             finish();
         });
 
         // Create Event button.
         Button addEventLink = findViewById(R.id.add_event_button_link);
+        addEventLink.setText(R.string.add_event_button);
         addEventLink.setOnClickListener(v -> {
             // Going to go to the selected events details page from here, below:
             Intent intent = new Intent(getApplicationContext(), AddEvent.class);
@@ -83,6 +85,7 @@ public class EventsList extends AppCompatActivity {
 
         // Create Person button.
         Button addPersonLink = findViewById(R.id.add_person_button_link);
+        addPersonLink.setText(R.string.add_person_button);
         addPersonLink.setOnClickListener(v -> {
             // Going to go to the selected events details page from here, below:
             Intent intent = new Intent(getApplicationContext(), AddPerson.class);

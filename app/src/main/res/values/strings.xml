@@ -1,3 +1,47 @@
 <resources>
-    <string name="app_name">Event Planner</string>
+<string name="app_name">Event Planner</string>
+
+<string name="back_button">Back</string>
+
+<string name="update_button">Update</string>
+
+<string name="delete_button">Delete</string>
+
+<string name="add_button">Add</string>
+
+<string name="cancel_button">Cancel</string>
+
+
+<string name="add_person_button">Add Person</string>
+
+<string name="add_event_button">Add Event</string>
+
+
+
+<string name="update_person_button">Update Person</string>
+
+
+<string name="update_event_button">Update Event</string>
+
+
+
+<string name="delete_person_button">Delete Person</string>
+
+<string name="delete_event_button">Delete Event</string>
+
+<string name="GoToEvents_button">Go To Events</string>
+
+<string name="delete_confirmation_title">Confirm Delete</string>
+<string name="delete_confirmation_message">Are you sure you want to delete this person?</string>
+    <string name="delete_confirmation_message_item">Are you sure you want to delete this item?</string>
+    <string name="fields_request">Please fill in all fields.</string>
+
+
+
+
+    <string name="yes_button">Yes</string>
+<string name="no_button">No</string>
+
+    <string name="data_received">No updated person data received.</string>
+
 </resources>

@@ -37,6 +37,7 @@ public class UpdatePerson extends AppCompatActivity {
         editTextName = findViewById(R.id.update_person_name); // Replace with actual ID from your layout
         editTextAge = findViewById(R.id.update_person_age);   // Replace with actual ID from xml
         buttonBack = findViewById(R.id.back_to_person_details); // Initialize the back button
+        buttonBack.setText(R.string.back_button);
         buttonBack.setOnClickListener(v -> {
             // This will just close the current activity and go back to the previous one in the activity stack
             finish();
@@ -44,6 +45,7 @@ public class UpdatePerson extends AppCompatActivity {
 
         // Update Person button.
         buttonUpdate = findViewById(R.id.update_person_button);
+        buttonUpdate.setText(R.string.update_person_button);
         buttonUpdate.setOnClickListener(v -> {
             Toast.makeText(this, "Updating...", Toast.LENGTH_SHORT).show();
             // Get the values from the EditTexts

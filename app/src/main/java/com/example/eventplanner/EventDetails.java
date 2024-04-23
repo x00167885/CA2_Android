@@ -129,6 +129,7 @@ public class EventDetails extends AppCompatActivity {
 
         // Button to go to edit event page.
         Button buttonEditEvent = findViewById(R.id.goto_update_event);
+        buttonEditEvent.setText(R.string.update_event_button);
         buttonEditEvent.setOnClickListener(v -> {
             // Create an intent to start the UpdateEvent activity
             Intent intent = new Intent(EventDetails.this, UpdateEvent.class);
@@ -140,12 +141,14 @@ public class EventDetails extends AppCompatActivity {
 
         // Button to go to delete an event.
         Button buttonDeleteEvent = findViewById(R.id.delete_event_button);
+        buttonDeleteEvent.setText(R.string.delete_event_button);
         buttonDeleteEvent.setOnClickListener(v -> {
             showDeleteConfirmationDialog(selectedEvent);
         });
 
         // Button to go to the events list.
         Button eventsListLink = findViewById(R.id.back_to_event_list);
+        eventsListLink.setText(R.string.back_button);
         eventsListLink.setOnClickListener(v -> {
             finish();
         });
@@ -233,9 +236,9 @@ public class EventDetails extends AppCompatActivity {
     // Showing a delete confirmation dialog for when the user chooses to delete the event.
     private void showDeleteConfirmationDialog(Event event) {
         new AlertDialog.Builder(this)
-                .setTitle("Confirm Delete") // Optional: set a title for the dialog
-                .setMessage("Are you sure you want to delete this item?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.delete_confirmation_title) // Optional: set a title for the dialog
+                .setMessage(R.string.delete_confirmation_message_item)
+                .setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int button_yes) {
                         RetrofitClient.deleteEventHelper(getApplicationContext(), event.getId(), deletionConfirmation -> {
@@ -248,7 +251,7 @@ public class EventDetails extends AppCompatActivity {
                         });
                     }
                 })
-                .setNegativeButton("No", null) // null listener means just dismiss the dialog
+                .setNegativeButton(R.string.no_button, null) // null listener means just dismiss the dialog
                 .show();
     }
 

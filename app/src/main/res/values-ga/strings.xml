@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Pleanálaí Imeachtaí</string>
+
+    <string name="back_button">Ar Ais</string>
+
+    <string name="update_button">Nuashonrú</string>
+
+    <string name="delete_button">Scrios</string>
+
+    <string name="add_button">Cuir</string>
+
+<string name="cancel_button">Ceal</string>
+
+
+    <string name="add_person_button">Cuir Duine</string>
+
+    <string name="add_event_button">Cuir Imeacht</string>
+
+
+
+    <string name="update_person_button">Nuashonrú Duine</string>
+
+
+    <string name="update_event_button">Nuashonrú Imeacht</string>
+
+
+
+    <string name="delete_person_button">Scrios Duine</string>
+
+    <string name="delete_event_button">Scrios Imeacht</string>
+
+<string name="GoToEvents_button">Dul Chuig Imeachtaí</string>
+
+<string name="delete_confirmation_title">Deimhnigh Scriosadh</string>
+<string name="delete_confirmation_message">An bhfuil tú cinnte gur mhaith leat an duine seo a scriosadh?</string>
+    <string name="delete_confirmation_message_item">An bhfuil tú cinnte gur mhaith leat an mhír seo a scriosadh?</string>
+    <string name="fields_request">Líon isteach gach réimse le do thoil.</string>
+
+
+    <string name="yes_button">Tá</string>
+<string name="no_button">Níl</string>#
+
+    <string name="data_received">Ní bhfuarthas aon sonraí nuashonraithe faoin duine.</string>
+
+
+
+</resources>
+
