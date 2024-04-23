@@ -25,11 +25,15 @@ import com.example.eventplanner.API.RetrofitClient;
 import com.example.eventplanner.Models.Event;
 import com.example.eventplanner.Models.Person;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class EventDetails extends AppCompatActivity {
     private ListView AttendeeList;
     private ArrayAdapter<Person> arrayAdapter;
+    private Event chosenEvent;
     private int UPDATE_REQUEST_CODE = 1;
     private boolean isUserInteracted = false;
     @Override
@@ -45,27 +49,28 @@ public class EventDetails extends AppCompatActivity {
 
         // Retrieve the data passed from the event list activity.
         Event selectedEvent = (Event) getIntent().getSerializableExtra("selectedEvent");
-        ArrayList<Person> retrievedPeople = (ArrayList<Person>) getIntent().getSerializableExtra("retrievedPeople");
+        chosenEvent = selectedEvent;
+        ArrayList<Person> retrievedPeople = (ArrayList<Person>) RetrofitClient.retrievedPeople;
 
         // Getting the name of the Event
         TextView eventNameTextView = findViewById(R.id.event_name_text_view);
-        eventNameTextView.setText(selectedEvent.getTitle());
+        eventNameTextView.setText(chosenEvent.getTitle());
 
         // Getting the date of the Event
         TextView eventDateView = findViewById(R.id.event_date);
-        eventDateView.setText(selectedEvent.getDate());
+        eventDateView.setText(chosenEvent.getDate());
 
         // Getting the date of the Event
         TextView eventPriceView = findViewById(R.id.event_price_text_view);
-        eventPriceView.setText(Float.toString(selectedEvent.getPrice()));
+        eventPriceView.setText(Float.toString(chosenEvent.getPrice()));
 
         // Getting the description of the Event
         TextView eventDescriptionView = findViewById(R.id.event_description);
-        eventDescriptionView.setText(selectedEvent.getDescription());
+        eventDescriptionView.setText(chosenEvent.getDescription());
 
         // Getting image associated with type of Event:
         ImageView imageView = findViewById(R.id.event_image);
-        showRelevantImage(imageView, selectedEvent.getType());
+        showRelevantImage(imageView, chosenEvent.getType());
 
         // Spinner for adding people to the event list.
         Spinner personSpinner = findViewById(R.id.people_spinner);
@@ -80,15 +85,14 @@ public class EventDetails extends AppCompatActivity {
                 if (isUserInteracted) {
                     Person selectedPerson = (Person) parent.getItemAtPosition(position);
                     // Using our RetrofitClient helper function to make the request given the activity context.
-                    RetrofitClient.addPersonToEventHelper(getApplicationContext(), selectedEvent.getId(), selectedPerson.getId(), personIsAddedSoDoThisNext -> {
+                    RetrofitClient.addPersonToEventHelper(getApplicationContext(), chosenEvent.getId(), selectedPerson.getId(), personIsAddedSoDoThisNext -> {
                         // Refreshing the current events details. USING CONSUMABLE TO CHAIN THE ASYNCHRONOUS CALLS.
-                        RetrofitClient.getEventByIdHelper(selectedEvent.getId(), retrievedEvent -> {
+                        RetrofitClient.getEventByIdHelper(chosenEvent.getId(), retrievedEvent -> {
                             updateEventAttendees(retrievedEvent);
                         });
                     });
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // Probably don't need this....
@@ -147,6 +151,7 @@ public class EventDetails extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             Event updatedEvent = (Event) data.getSerializableExtra("updatedEvent");
+            Person updatedPerson = (Person) data.getSerializableExtra("updatedPerson");
             // Making sure we are getting an event object back from the event update page. (Otherwise display a toast error.)
             if (updatedEvent != null) {
                 // Updating UI with the updated event details
@@ -154,6 +159,37 @@ public class EventDetails extends AppCompatActivity {
                 // Setting the result code for this activity, so we can notify our list activity to update.
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("updatedEvent", updatedEvent);
+                setResult(RESULT_OK, resultIntent);
+            } else {
+                Toast.makeText(this, "No updated event data received.", Toast.LENGTH_SHORT).show();
+            }
+            // Refreshing the events so we can get the refreshed updated person in the attendee list.
+            if (updatedPerson != null) {
+                // We also need to tell our list of the update so it can be refreshed as well.
+                Intent resultIntent = new Intent();
+                // If yes, we have updated a person, we need to refresh all the data so the app displays everything up to date.
+                RetrofitClient.getEventsHelper(retrievedEvents -> {
+                    List<Event> eventsData = retrievedEvents;
+                    Optional<Event> storedEvent = eventsData.stream().filter(event -> event.getId() == this.chosenEvent.getId()).findFirst();
+                    chosenEvent = storedEvent.get();
+                    // Refreshing the list of people who are going to the event. (Because we just updated a person)
+                    AttendeeList = findViewById(R.id.attendee_list);
+                    arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item, chosenEvent.getEventsPeople());
+                    AttendeeList.setAdapter(arrayAdapter);
+                    // Passing back all the new event data.
+                    resultIntent.putExtra("updatedEvents", (Serializable) retrievedEvents);
+                    // Need to refresh the people for the drop down spinner:
+                    RetrofitClient.getPeopleHelper(retrievedPeople -> {
+                        // Refreshing the list of people in the spinner:
+                        Spinner personSpinner = findViewById(R.id.people_spinner);
+                        ArrayAdapter<Person> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, retrievedPeople);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        personSpinner.setAdapter(adapter);
+                        // Passing back all the new people data.
+                        resultIntent.putExtra("updatedPeople", retrievedPeople);
+                    });
+                });
+                // Setting an okay result to pass back all the updated data.
                 setResult(RESULT_OK, resultIntent);
             } else {
                 Toast.makeText(this, "No updated event data received.", Toast.LENGTH_SHORT).show();

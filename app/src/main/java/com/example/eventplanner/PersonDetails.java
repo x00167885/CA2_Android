@@ -120,14 +120,13 @@ public class PersonDetails extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             Person updatedPerson = (Person) data.getSerializableExtra("updatedPerson");
-            // Making sure we are getting an event object back from the event update page. (Otherwise display a toast error.)
+            // Making sure we are getting a person object back from the person update page. (Otherwise display a toast error.)
             if (updatedPerson != null) {
-                // Updating UI with the updated event details
                 updatePersonDetailsInUI(updatedPerson);
-                // Setting the result code for this activity, so we can notify our list activity to update.
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("updatedPerson", updatedPerson);
                 setResult(RESULT_OK, resultIntent);
+
             } else {
                 Toast.makeText(this, "No updated person data received.", Toast.LENGTH_SHORT).show();
             }
@@ -138,7 +137,6 @@ public class PersonDetails extends AppCompatActivity {
     private void updatePersonDetailsInUI(Person person) {
         TextView personNameTextView = findViewById(R.id.person_name_text_view);
         personNameTextView.setText(person.getName());
-
         TextView personAgeTextView = findViewById(R.id.person_age_text_view);
         personAgeTextView.setText(Integer.toString(person.getAge()));
     }

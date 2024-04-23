@@ -31,6 +31,7 @@ public class RetrofitClient {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create()) // Using GSON to parse response.
                     .build();
+            System.out.println("Making CAll");
         }
         return retrofit.create(APIService.class);
     }
@@ -47,6 +48,7 @@ public class RetrofitClient {
                 if (response.isSuccessful()) {
                     // Telling our Activity that it needs to accept our array list of retrieved people, as input.
                     onPeopleRequestSuccess.accept((ArrayList) response.body());
+                    retrievedPeople = response.body();
                 }
             }
             @Override
@@ -88,6 +90,7 @@ public class RetrofitClient {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (response.isSuccessful()) {
                     onEventsRequestSuccess.accept(response.body());
+                    retrievedEvents = response.body();
                 }
             }
             @Override

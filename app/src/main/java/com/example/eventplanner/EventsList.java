@@ -27,7 +27,6 @@ import java.util.List;
 public class EventsList extends AppCompatActivity {
     private ListView eventsList;
     private ArrayAdapter<Event> arrayAdapter;
-    private ArrayList<Person> RetrievedPeople;
     private int UPDATE_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +50,6 @@ public class EventsList extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), EventDetails.class);
             // Passing in the selected event to the event details page:
             intent.putExtra("selectedEvent", selectedEvent);
-            // Passing in the list of people within our database, so we can select to add in the details page.
-            intent.putExtra("retrievedPeople", RetrievedPeople);
             // Start the activity and expect a result back if an event has been updated.
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
@@ -62,8 +59,8 @@ public class EventsList extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateEvents();
-                updatePeople();
+                updateEvents(null);
+                updatePeople(null);
                 Toast.makeText(getApplicationContext(), "Refreshing Events and People.", Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -89,16 +86,36 @@ public class EventsList extends AppCompatActivity {
         // Checking if we already have events, and pulling them down if we don't have any.
         if (RetrofitClient.retrievedEvents.isEmpty()) {
             // Calling API to retrieve all events:
-            updateEvents();
+            updateEvents(null);
         } else {
             updateEventListView(RetrofitClient.retrievedEvents);
         }
 
         if (RetrofitClient.retrievedPeople.isEmpty()) {
             // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
-            updatePeople();
-        } else {
-            RetrievedPeople = (ArrayList<Person>) RetrofitClient.retrievedPeople;
+            updatePeople(null);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null) {
+                if (data.hasExtra("updatedEvent") || data.hasExtra("addedEvent") || data.hasExtra("deletedEvent")) {
+                    updateEvents(null);
+                } else if (data.hasExtra("updatedEvents") && data.hasExtra("updatedPeople")) {
+                    // If a person has been updated, they need to be reflected through the app.
+                    // Accessing the refreshed data passed back from the Event details page.
+                    List<Event> updatedEvents = (List<Event>) data.getSerializableExtra("updatedEvents");
+                    List<Person> updatedPeople = (List<Person>) data.getSerializableExtra("updatedPeople");
+                    // Then updating the stored events and people accordingly, preventing needless requests.
+                    updateEvents(updatedEvents);
+                    updatePeople(updatedPeople);
+                }
+            } else {
+                System.out.println("No Event was added, updated, or deleted so no need to refresh.");
+            }
         }
     }
 
@@ -113,35 +130,31 @@ public class EventsList extends AppCompatActivity {
         eventsList.setAdapter(arrayAdapter);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (data != null) {
-                if (data.hasExtra("updatedEvent") || data.hasExtra("addedEvent") || data.hasExtra("deletedEvent"))
-                    updateEvents();
-            } else {
-                System.out.println("No Event was added, updated, or deleted so no need to refresh.");
-            }
+    private void updateEvents(@Nullable List updatedEvents) {
+        if(updatedEvents == null || updatedEvents.isEmpty()){
+            RetrofitClient.getEventsHelper(retrievedEvents -> {
+                // Updating our list, so we have the most up-date-content showing.
+                updateEventListView(retrievedEvents);
+                // Storing the retrieved events so as to not make needless requests.
+                RetrofitClient.retrievedEvents = retrievedEvents;
+            });
+        }else{
+            // We store the events we got back...
+            RetrofitClient.retrievedEvents = updatedEvents;
+            // Also need to update the events list view to properly propogate changes.
+            updateEventListView(RetrofitClient.retrievedEvents);
         }
     }
 
-    private void updateEvents() {
-        RetrofitClient.getEventsHelper(retrievedEvents -> {
-            List<Event> eventsData = retrievedEvents;
-            // Updating our list, so we have the most up-date-content showing.
-            updateEventListView(eventsData);
-            // Storing the retrieved events so as to not make needless requests.
-            RetrofitClient.retrievedEvents = eventsData;
-        });
-    }
-
-    private void updatePeople() {
-        // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
-        RetrofitClient.getPeopleHelper(retrievedPeople -> {
-            RetrievedPeople = retrievedPeople;
-            // Storing the retrieved people so as to not make needless requests.
-            RetrofitClient.retrievedPeople = retrievedPeople;
-        });
+    private void updatePeople(@Nullable List updatedPeople) {
+        if(updatedPeople == null || updatedPeople.isEmpty()) {
+            // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
+            RetrofitClient.getPeopleHelper(retrievedPeople -> {
+                // Storing the retrieved people so as to not make needless requests.
+                RetrofitClient.retrievedPeople = retrievedPeople;
+            });
+        }else{
+            RetrofitClient.retrievedPeople = updatedPeople;
+        }
     }
 }
