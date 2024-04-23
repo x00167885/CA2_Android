@@ -1,5 +1,6 @@
 package com.example.eventplanner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -10,11 +11,13 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.eventplanner.API.RetrofitClient;
 import com.example.eventplanner.Models.Event;
 import com.example.eventplanner.Models.Person;
 
@@ -34,6 +37,7 @@ public class PersonDetails extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         // Retrieve the data for the people
         Person selectedPerson = (Person) getIntent().getSerializableExtra("selectedPerson");
@@ -78,6 +82,11 @@ public class PersonDetails extends AppCompatActivity {
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
 
+        Button buttonDeletePerson = findViewById(R.id.delete_person_button);
+        buttonDeletePerson.setOnClickListener(v -> {
+            showDeleteConfirmationDialog(selectedPerson, eventId);
+        });
+
 
         // Button to go back to the events details.
         Button eventsDetailsLink = findViewById(R.id.back_to_event_details);
@@ -93,27 +102,27 @@ public class PersonDetails extends AppCompatActivity {
 
     }
 
-    // Showing a delete confirmation dialog for when the user chooses to delete a person.
-//    private void showDeleteConfirmationDialog(Person person) {
-//        new AlertDialog.Builder(this)
-//                .setTitle("Confirm Delete") // Optional: set a title for the dialog
-//                .setMessage("Are you sure you want to delete this item?")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int button_yes) {
-//                        RetrofitClient.deletePersonHelper(getApplicationContext(), person.getId(), deletionConfirmation -> {
-//                            // Setting the result code for this activity, because we just deleted the event for this page.
-//                            Intent resultIntent = new Intent();
-//                            resultIntent.putExtra("deletedPerson", "Person Deleted");
-//                            setResult(RESULT_OK, resultIntent);
-//                            // Finished with this event, go back to event list and refresh.
-//                            finish();
-//                        });
-//                    }
-//                })
-//                .setNegativeButton("No", null) // null listener means just dismiss the dialog
-//                .show();
-//    }
+    //     Showing a delete confirmation dialog for when the user chooses to delete a person.
+    private void showDeleteConfirmationDialog(Person person, int eventId) {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Delete") // Optional: set a title for the dialog
+                .setMessage("Are you sure you want to delete this person?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button_yes) {
+                        RetrofitClient.deletePersonHelper(getApplicationContext(), eventId, person.getId(), deletionConfirmation -> {
+                            // Setting the result code for this activity, because we just deleted the event for this page.
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("deletedPerson", "Person Deleted");
+                            setResult(RESULT_OK, resultIntent);
+                            // Finished with this event, go back to event list and refresh.
+                            finish();
+                        });
+                    }
+                })
+                .setNegativeButton("No", null) // null listener means just dismiss the dialog
+                .show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -143,3 +152,25 @@ public class PersonDetails extends AppCompatActivity {
         personAgeTextView.setText(Integer.toString(person.getAge()));
     }
 }
+
+//    private void showDeleteConfirmationDialog(Person person) {
+//        new AlertDialog.Builder(this)
+//                .setTitle("Confirm Delete") // Optional: set a title for the dialog
+//                .setMessage("Are you sure you want to delete this person?")
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int button_yes) {
+//                        RetrofitClient.deleteEventHelper(getApplicationContext(), person.getId(), deletionConfirmation -> {
+//                            // Setting the result code for this activity, because we just deleted the event for this page.
+//                            Intent resultIntent = new Intent();
+//                            resultIntent.putExtra("deletedPerson", "Person Deleted");
+//                            setResult(RESULT_OK, resultIntent);
+//                            // Finished with this event, go back to event list and refresh.
+//                            finish();
+//                        });
+//                    }
+//                })
+//                .setNegativeButton("No", null) // null listener means just dismiss the dialog
+//                .show();
+//    }
+//}

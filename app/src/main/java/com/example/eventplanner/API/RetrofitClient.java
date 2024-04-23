@@ -20,7 +20,8 @@ public class RetrofitClient {
     private static Retrofit retrofit = null;
     private static final String BASE_URL = "https://ead2-ca2-api.azurewebsites.net/"; // Our API hosted on Azure.
     public static List<Event> retrievedEvents = new ArrayList<>();
-    public static List<Person> retrievedPeople = new ArrayList<>();;
+    public static List<Person> retrievedPeople = new ArrayList<>();
+    ;
 
     // API Service:
     public static APIService getApiService() {
@@ -40,7 +41,7 @@ public class RetrofitClient {
     // Person Specific endpoint helpers:
 
     // Getting people to populate event detail pages, endpoint:
-    public static void getPeopleHelper(Consumer<ArrayList> onPeopleRequestSuccess){
+    public static void getPeopleHelper(Consumer<ArrayList> onPeopleRequestSuccess) {
         getApiService().getPeople().enqueue(new Callback<List<Person>>() {
             @Override
             public void onResponse(Call<List<Person>> call, Response<List<Person>> response) {
@@ -49,15 +50,18 @@ public class RetrofitClient {
                     onPeopleRequestSuccess.accept((ArrayList) response.body());
                 }
             }
+
             @Override
             public void onFailure(Call<List<Person>> call, Throwable t) {
                 System.out.println("Error fetching people" + t);
             }
         });
-    };
+    }
+
+    ;
 
     // Adding person to event, endpoint.
-    public static void addPersonToEventHelper(Context context, int eventId, int personId, Consumer<Response> onSuccess){
+    public static void addPersonToEventHelper(Context context, int eventId, int personId, Consumer<Response> onSuccess) {
         getApiService().addPersonToEvent(eventId, personId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -71,6 +75,7 @@ public class RetrofitClient {
                     Toast.makeText(context, "Person not added to event.", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 // Handle failure such as a network error
@@ -82,7 +87,7 @@ public class RetrofitClient {
     // Event Specific endpoint helpers:
 
     // Getting all events, endpoint.
-    public static void getEventsHelper(Consumer<List> onEventsRequestSuccess){
+    public static void getEventsHelper(Consumer<List> onEventsRequestSuccess) {
         getApiService().getEvents().enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
@@ -90,6 +95,7 @@ public class RetrofitClient {
                     onEventsRequestSuccess.accept(response.body());
                 }
             }
+
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 System.out.println("Error fetching events" + t);
@@ -98,7 +104,7 @@ public class RetrofitClient {
     }
 
     // Get event by it's id, endpoint.
-    public static void getEventByIdHelper(int eventId, Consumer<Event> onEventRequestSuccess){
+    public static void getEventByIdHelper(int eventId, Consumer<Event> onEventRequestSuccess) {
         getApiService().getEventById(eventId).enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
@@ -106,6 +112,7 @@ public class RetrofitClient {
                     onEventRequestSuccess.accept(response.body());
                 }
             }
+
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 System.out.println("Error fetching event" + t);
@@ -114,7 +121,7 @@ public class RetrofitClient {
     }
 
     // Adding an Event endpoint.
-    public static void addEventHelper(Context context, Event event){
+    public static void addEventHelper(Context context, Event event) {
         getApiService().addEvent(event).enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
@@ -126,6 +133,7 @@ public class RetrofitClient {
                     Toast.makeText(context, "Creation failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.
@@ -135,7 +143,7 @@ public class RetrofitClient {
     }
 
     // Updating the event details endpoint.
-    public static void updateEventHelper(Context context, Event originalEvent, Event eventForUpdate, Consumer<Event> onEventUpdateSuccess){
+    public static void updateEventHelper(Context context, Event originalEvent, Event eventForUpdate, Consumer<Event> onEventUpdateSuccess) {
         getApiService().updateEvent(originalEvent.getId(), eventForUpdate).enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
@@ -157,6 +165,7 @@ public class RetrofitClient {
                     Toast.makeText(context, "Update failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.
@@ -166,7 +175,7 @@ public class RetrofitClient {
     }
 
     // Updating the event details endpoint.
-    public static void updatePersonHelper(Context context, int eventId, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess){
+    public static void updatePersonHelper(Context context, int eventId, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess) {
         getApiService().updatePerson(eventId, originalPerson.getId(), personForUpdate).enqueue(new Callback<Person>() {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
@@ -185,6 +194,7 @@ public class RetrofitClient {
                     Toast.makeText(context, "Update failed. Womp womp" + response.errorBody(), Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<Person> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.
@@ -194,7 +204,7 @@ public class RetrofitClient {
     }
 
     // Adding an Event endpoint.
-    public static void deleteEventHelper(Context context, int eventId, Consumer<String> onEventDeletionSuccess){
+    public static void deleteEventHelper(Context context, int eventId, Consumer<String> onEventDeletionSuccess) {
         getApiService().deleteEvent(eventId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -207,6 +217,29 @@ public class RetrofitClient {
                     Toast.makeText(context, "Delete failed." + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // The call failed to execute. Handle the failure, typically an IOException.
+                Toast.makeText(context, "Delete failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static void deletePersonHelper(Context context, int eventId, int personId, Consumer<String> onPersonDeletionSuccess) {
+        getApiService().deletePerson(eventId, personId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Notify the user of successfully adding an event.
+                    onPersonDeletionSuccess.accept(response.message());
+                    Toast.makeText(context, "Event deleted successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Notify the user that there was a problem.
+                    Toast.makeText(context, "Delete failed." + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 // The call failed to execute. Handle the failure, typically an IOException.
