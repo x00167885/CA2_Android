@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,7 +32,6 @@ public class EventDetails extends AppCompatActivity {
     private ArrayAdapter<Person> arrayAdapter;
     private int UPDATE_REQUEST_CODE = 1;
     private boolean isUserInteracted = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +62,10 @@ public class EventDetails extends AppCompatActivity {
         // Getting the description of the Event
         TextView eventDescriptionView = findViewById(R.id.event_description);
         eventDescriptionView.setText(selectedEvent.getDescription());
+
+        // Getting image associated with type of Event:
+        ImageView imageView = findViewById(R.id.event_image);
+        showRelevantImage(imageView, selectedEvent.getType());
 
         // Spinner for adding people to the event list.
         Spinner personSpinner = findViewById(R.id.people_spinner);
@@ -167,6 +171,12 @@ public class EventDetails extends AppCompatActivity {
 
         TextView eventDescriptionView = findViewById(R.id.event_description);
         eventDescriptionView.setText(event.getDescription());
+
+        TextView eventPriceView = findViewById(R.id.event_price_text_view);
+        eventPriceView.setText(Float.toString(event.getPrice()));
+
+        ImageView imageView = findViewById(R.id.event_image);
+        showRelevantImage(imageView, event.getType());
     }
 
     // Updating event attendees list when we add a person to the event.
@@ -197,5 +207,28 @@ public class EventDetails extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null) // null listener means just dismiss the dialog
                 .show();
+    }
+
+    private void showRelevantImage(ImageView imageView, Event.EventType eventType) {
+        switch (eventType) {
+            case FOODFESTIVAL:
+                imageView.setBackgroundResource(R.drawable.food_festival);
+                break;
+            case MUSICCONCERT:
+                imageView.setBackgroundResource(R.drawable.music_concert);
+                break;
+            case TECHCONFERENCE:
+                imageView.setBackgroundResource(R.drawable.tech_conference);
+                break;
+            case SPORTSMATCH:
+                imageView.setBackgroundResource(R.drawable.sports_match);
+                break;
+            case ARTEXHIBITION:
+                imageView.setBackgroundResource(R.drawable.art_exhibition);
+                break;
+            default:
+                imageView.setBackgroundResource(R.drawable.art_exhibition);
+                break;
+        }
     }
 }

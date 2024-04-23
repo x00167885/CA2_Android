@@ -3,9 +3,13 @@ package com.example.eventplanner;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -21,8 +25,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class AddEvent extends AppCompatActivity {
-    private EditText editTextTitle, editTextDate, editTextDescription;
+    private EditText editTextTitle, editTextDate, editTextDescription, editTextPrice;
     private Button buttonAdd;
+    private Event.EventType selectedEventType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,7 @@ public class AddEvent extends AppCompatActivity {
         editTextTitle = findViewById(R.id.add_event_name); // Replace with actual ID from your layout
         editTextDate = findViewById(R.id.add_event_date);   // Replace with actual ID from your layout
         editTextDescription = findViewById(R.id.add_event_description); // Replace with actual ID from your layout
+        editTextPrice = findViewById(R.id.add_event_price);
         // Adding a date picker:
         editTextDate.setOnClickListener(v -> {
             // Use the current date as the default date in the picker
@@ -57,6 +63,21 @@ public class AddEvent extends AppCompatActivity {
             datePickerDialog.show();
         });
 
+        // Selecting Event Type Spinner
+        Spinner eventTypeSpinner = findViewById(R.id.add_event_type_spinner);
+        ArrayAdapter<Event.EventType> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Event.EventType.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        eventTypeSpinner.setAdapter(adapter);
+        eventTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedEventType = (Event.EventType) parent.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         // Add Event button.
         buttonAdd = findViewById(R.id.add_event_button);
         buttonAdd.setOnClickListener(v -> {
@@ -64,16 +85,18 @@ public class AddEvent extends AppCompatActivity {
             String title = editTextTitle.getText().toString();
             String date = editTextDate.getText().toString();
             String description = editTextDescription.getText().toString();
+            String price = editTextPrice.getText().toString();
+            String eventType = selectedEventType.toString();
             // Check if the user has actually entered the data
-            if(title.isEmpty() || date.isEmpty() || description.isEmpty()) {
+            if(title.isEmpty() || date.isEmpty() || description.isEmpty() || price.isEmpty() || eventType.isEmpty()) {
                 Toast.makeText(AddEvent.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                 return;
             };
-            Event newEvent = new Event(title, date, description);
+            Event newEvent = new Event(title, date, description, Float.parseFloat(price), selectedEventType);
             addEvent(newEvent);
         });
 
-        // Update button to update the event.
+        // Cancel button.
         Button buttonCancel = findViewById(R.id.back_to_event_list);
         buttonCancel.setOnClickListener(v -> {
             finish();

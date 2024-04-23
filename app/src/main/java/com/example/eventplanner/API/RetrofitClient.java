@@ -146,6 +146,8 @@ public class RetrofitClient {
                     originalEvent.setPeople(originalEvent.getEventsPeople());
                     originalEvent.setDate(eventForUpdate.getDate());
                     originalEvent.setDescription(eventForUpdate.getDescription());
+                    originalEvent.setPrice(eventForUpdate.getPrice());
+                    originalEvent.setType(eventForUpdate.getType());
                     // Telling our Activity that it needs to accept our updated event as an input.
                     onEventUpdateSuccess.accept(originalEvent);
                     // Notify the user of the successful update.

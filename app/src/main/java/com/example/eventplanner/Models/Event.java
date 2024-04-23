@@ -7,6 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Event implements Serializable { // Need to make this serializable in order to render the event data passed into details.
+
+    public enum EventType {
+        FOODFESTIVAL("FoodFestival"),
+        MUSICCONCERT("MusicConcert"),
+        TECHCONFERENCE("TechConference"),
+        SPORTSMATCH("SportsMatch"),
+        ARTEXHIBITION("ArtExhibition");
+        private final String eventDescription;
+        EventType(String description) {
+            this.eventDescription = description;
+        }
+        @Override
+        public String toString() {
+            return this.eventDescription;
+        }
+    }
+
     @SerializedName("eventId")
     private int eventId;
     @SerializedName("title")
@@ -17,16 +34,20 @@ public class Event implements Serializable { // Need to make this serializable i
     private String description;
     @SerializedName("price")
     private float price;
+    @SerializedName("type")
+    private EventType type;
     @SerializedName("eventsPeople")
     private List<Person> eventsPeople;
 
     public Event(){} // We still need the default constructor here.
 
-    public Event(String title_in, String date_in, String description_in){
+    public Event(String title_in, String date_in, String description_in, float price_in, EventType eventType_in){
         this.eventId = 0; // Not setting eventId, allowing entity framework to work that out.
         this.title = title_in;
         this.date = date_in;
         this.description = description_in;
+        this.price = price_in;
+        this.type = eventType_in;
         this.eventsPeople = new ArrayList<>(); // No people are going to be apart of the event at first.
     }
 
@@ -42,6 +63,9 @@ public class Event implements Serializable { // Need to make this serializable i
     public List<Person> getEventsPeople() { return eventsPeople; }
     public float getPrice() {
         return price;
+    }
+    public EventType getType() {
+        return type;
     }
 
     // Setters
@@ -62,6 +86,9 @@ public class Event implements Serializable { // Need to make this serializable i
     }
     public void setPeople(List<Person> people) {
         this.eventsPeople = people;
+    }
+    public void setType(EventType type) {
+        this.type = type;
     }
 
     @Override // Overriding the ToString output for a nicer list on events list page.
