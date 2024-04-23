@@ -46,6 +46,9 @@ public class UpdatePerson extends AppCompatActivity {
         // Update Person button.
         buttonUpdate = findViewById(R.id.update_person_button);
         buttonUpdate.setOnClickListener(v -> {
+
+            Toast.makeText(this, "Updating...", Toast.LENGTH_SHORT).show();
+
             // Get the values from the EditTexts
             String name = editTextName.getText().toString();
             String age = editTextAge.getText().toString();
@@ -76,10 +79,14 @@ public class UpdatePerson extends AppCompatActivity {
 //        eventForUpdate.setDescription(event.getDescription());
         // Set an empty people's list to not confuse Entity Framework. (WE ARE ONLY UPDATING THE EVENTS DETAILS NOT THE PEOPLE PART OF THE EVENT)
 //        personForUpdate.setPeople(new ArrayList<>());
+        System.out.println("calling API");
 
         // Make the API call to update the event with the new information
         RetrofitClient.updatePersonHelper(getApplicationContext(), eventId, person, personForUpdate, updatedPerson -> {
             // Pass the updated event back to the previous activity, and set the result of the activity to OK!
+
+            System.out.println("API call successful");
+
             Intent resultIntent = new Intent();
             resultIntent.putExtra("updatedPerson", updatedPerson); // Consume the updatedEvent from the API service and pass it back to the details page.
             setResult(RESULT_OK, resultIntent);
