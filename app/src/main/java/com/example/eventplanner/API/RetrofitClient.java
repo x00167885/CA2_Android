@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,28 +26,9 @@ public class RetrofitClient {
     public static APIService getApiService() {
         // If retrofit is not yet initialised to be used within our application, we must do so.
         if (retrofit == null) {
-            // Specifying and building the okHttpClient to be used, allows for interceptor below.
-            OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(chain -> { // Adding an interceptor for retries (Allowing database to boot up in azure).
-                        okhttp3.Request request = chain.request();
-                        okhttp3.Response response = chain.proceed(request);
-                        System.out.println("MAKING REQUEST");
-                        int tryCount = 0;
-                        while (!response.isSuccessful() && tryCount < 15) {
-                            tryCount++;
-                            try {
-                                Thread.sleep(2000);   // Adding a delay of 2 seconds, between each retry.
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
-                            response = chain.proceed(request);
-                        }
-                        return response;
-                    }).build();
             // Finally creating retrofit client to provide API interaction abstraction.
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create()) // Using GSON to parse response.
                     .build();
         }

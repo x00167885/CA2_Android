@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.eventplanner.API.RetrofitClient;
 import com.example.eventplanner.Models.Person;
 
+import java.util.ArrayList;
+
 public class UpdatePerson extends AppCompatActivity {
 
     private EditText editTextName, editTextAge;
@@ -34,21 +36,16 @@ public class UpdatePerson extends AppCompatActivity {
         // Initialize your EditText fields
         editTextName = findViewById(R.id.update_person_name); // Replace with actual ID from your layout
         editTextAge = findViewById(R.id.update_person_age);   // Replace with actual ID from xml
-
         buttonBack = findViewById(R.id.back_to_person_details); // Initialize the back button
-
         buttonBack.setOnClickListener(v -> {
             // This will just close the current activity and go back to the previous one in the activity stack
             finish();
         });
 
-
         // Update Person button.
         buttonUpdate = findViewById(R.id.update_person_button);
         buttonUpdate.setOnClickListener(v -> {
-
             Toast.makeText(this, "Updating...", Toast.LENGTH_SHORT).show();
-
             // Get the values from the EditTexts
             String name = editTextName.getText().toString();
             String age = editTextAge.getText().toString();
@@ -76,17 +73,10 @@ public class UpdatePerson extends AppCompatActivity {
         personForUpdate.setId(person.getId());
         personForUpdate.setName(person.getName());
         personForUpdate.setAge(person.getAge());
-//        eventForUpdate.setDescription(event.getDescription());
-        // Set an empty people's list to not confuse Entity Framework. (WE ARE ONLY UPDATING THE EVENTS DETAILS NOT THE PEOPLE PART OF THE EVENT)
-//        personForUpdate.setPeople(new ArrayList<>());
-        System.out.println("calling API");
-
+        personForUpdate.setEvents(new ArrayList<>());
         // Make the API call to update the event with the new information
         RetrofitClient.updatePersonHelper(getApplicationContext(), eventId, person, personForUpdate, updatedPerson -> {
             // Pass the updated event back to the previous activity, and set the result of the activity to OK!
-
-            System.out.println("API call successful");
-
             Intent resultIntent = new Intent();
             resultIntent.putExtra("updatedPerson", updatedPerson); // Consume the updatedEvent from the API service and pass it back to the details page.
             setResult(RESULT_OK, resultIntent);
