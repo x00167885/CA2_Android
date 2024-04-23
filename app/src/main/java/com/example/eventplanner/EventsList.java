@@ -81,6 +81,15 @@ public class EventsList extends AppCompatActivity {
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
 
+        // Create Person button.
+        Button addPersonLink = findViewById(R.id.add_person_button_link);
+        addPersonLink.setOnClickListener(v -> {
+            // Going to go to the selected events details page from here, below:
+            Intent intent = new Intent(getApplicationContext(), AddPerson.class);
+            // Start the activity and expect a result back if an event has been updated.
+            startActivityForResult(intent, UPDATE_REQUEST_CODE);
+        });
+
         // API CALLS AFTER VIEWS HAVE ALREADY BEEN CREATED.
 
         // Checking if we already have events, and pulling them down if we don't have any.
@@ -102,11 +111,12 @@ public class EventsList extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null) {
-                if (data.hasExtra("updatedEvent") || data.hasExtra("addedEvent") || data.hasExtra("deletedEvent")) {
+                if (data.hasExtra("updatedEvent") || data.hasExtra("addedEvent") || data.hasExtra("deletedEvent") || data.hasExtra("addedPerson") || data.hasExtra("personAddedToEvent")) {
                     updateEvents(null);
+                    updatePeople(null);
                 } else if (data.hasExtra("updatedEvents") && data.hasExtra("updatedPeople")) {
                     // If a person has been updated, they need to be reflected through the app.
-                    // Accessing the refreshed data passed back from the Event details page.
+                    // Accessing the refreshed data passed back from the Event details page:.
                     List<Event> updatedEvents = (List<Event>) data.getSerializableExtra("updatedEvents");
                     List<Person> updatedPeople = (List<Person>) data.getSerializableExtra("updatedPeople");
                     // Then updating the stored events and people accordingly, preventing needless requests.

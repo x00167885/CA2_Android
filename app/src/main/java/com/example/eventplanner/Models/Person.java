@@ -3,6 +3,7 @@ package com.example.eventplanner.Models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Person implements Serializable {
@@ -17,7 +18,11 @@ public class Person implements Serializable {
 
     // Constructor
     public Person(){}
-    public Person(String name_in, int age_in){} // NEED THIS JUST FOR TESTING
+    public Person(String name_in, int age_in){
+        this.name = name_in;
+        this.age = age_in;
+        this.eventsPeople = new ArrayList<>();
+    }
 
     // Getters
     public int getId() {

@@ -38,6 +38,12 @@ public interface APIService {
     @PUT("api/Events/{eventId}/Person/{personId}")
     Call<Person> updatePerson(@Path("eventId") int eventId, @Path("personId") int personId, @Body Person person);
 
+    @DELETE("api/Events/{eventId}/Person/{personId}")
+    Call<Void> deletePerson(@Path("eventId") int eventId, @Path("personId") int personId);
+
+    @POST("api/Events/Person")
+    Call<Person> addPerson(@Body Person person);
+
     @POST("api/Events/{eventId}/Person/{personId}")
     Call<Void> addPersonToEvent(@Path("eventId") int eventId, @Path("personId") int personId);
 

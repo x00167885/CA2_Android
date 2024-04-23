@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Allowing Internet Access -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--    Allowing user to access photo gallery to upload image of event -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +22,9 @@
             android:exported="false" />
         <activity
             android:name=".AddEvent"
+            android:exported="false" />
+        <activity
+            android:name=".AddPerson"
             android:exported="false" />
         <activity
             android:name=".UpdateEvent"
