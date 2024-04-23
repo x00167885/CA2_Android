@@ -38,7 +38,6 @@ public class PersonDetails extends AppCompatActivity {
             return insets;
         });
 
-
         // Retrieve the data for the people
         Person selectedPerson = (Person) getIntent().getSerializableExtra("selectedPerson");
         // Retrieving event id for updating person.
@@ -51,23 +50,6 @@ public class PersonDetails extends AppCompatActivity {
         // Getting the age of the person
         TextView personAgeTextView = findViewById(R.id.person_age_text_view);
         personAgeTextView.setText(Integer.toString(selectedPerson.getAge()));
-
-        // Spinner for adding people to event list, adapt to add the attended events for each person
-//        Spinner personSpinner = findViewById(R.id.event_spinner);
-//        ArrayAdapter<Person> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, retrievedPeople);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        personSpinner.setAdapter(adapter);
-//
-//        // So we can click on an person from the list.
-//        AttendeeList.setOnItemClickListener((parent, view, position, id) -> {
-//            Person selectedPerson = arrayAdapter.getItem(position);
-//            // Going to go to the selected events details page from here, below:
-//            Intent intent = new Intent(getApplicationContext(), PersonDetails.class);
-//            // Passing in the selected event to the event details page:
-//            intent.putExtra("selectedPerson", selectedPerson);
-//            // Passing in the list of people within our database, so we can select to add in the details page.            // Start the activity and expect a result back if an event has been updated.
-//            startActivityForResult(intent, UPDATE_REQUEST_CODE);
-//        });
 
         // Button to go to edit event page.
         Button buttonEditEvent = findViewById(R.id.goto_update_person);
@@ -87,19 +69,11 @@ public class PersonDetails extends AppCompatActivity {
             showDeleteConfirmationDialog(selectedPerson, eventId);
         });
 
-
         // Button to go back to the events details.
         Button eventsDetailsLink = findViewById(R.id.back_to_event_details);
         eventsDetailsLink.setOnClickListener(v -> {
             finish();
         });
-
-        // Button to go to delete a person.
-//        Button buttonDeleteEvent = findViewById(R.id.delete_event_button);
-//        buttonDeleteEvent.setOnClickListener(v -> {
-//            showDeleteConfirmationDialog(selectedEvent);
-//        });
-
     }
 
     //     Showing a delete confirmation dialog for when the user chooses to delete a person.
@@ -135,7 +109,6 @@ public class PersonDetails extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("updatedPerson", updatedPerson);
                 setResult(RESULT_OK, resultIntent);
-
             } else {
                 Toast.makeText(this, "No updated person data received.", Toast.LENGTH_SHORT).show();
             }
@@ -150,25 +123,3 @@ public class PersonDetails extends AppCompatActivity {
         personAgeTextView.setText(Integer.toString(person.getAge()));
     }
 }
-
-//    private void showDeleteConfirmationDialog(Person person) {
-//        new AlertDialog.Builder(this)
-//                .setTitle("Confirm Delete") // Optional: set a title for the dialog
-//                .setMessage("Are you sure you want to delete this person?")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int button_yes) {
-//                        RetrofitClient.deleteEventHelper(getApplicationContext(), person.getId(), deletionConfirmation -> {
-//                            // Setting the result code for this activity, because we just deleted the event for this page.
-//                            Intent resultIntent = new Intent();
-//                            resultIntent.putExtra("deletedPerson", "Person Deleted");
-//                            setResult(RESULT_OK, resultIntent);
-//                            // Finished with this event, go back to event list and refresh.
-//                            finish();
-//                        });
-//                    }
-//                })
-//                .setNegativeButton("No", null) // null listener means just dismiss the dialog
-//                .show();
-//    }
-//}

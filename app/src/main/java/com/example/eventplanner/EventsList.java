@@ -106,7 +106,7 @@ public class EventsList extends AppCompatActivity {
                     updateEvents(null);
                 } else if (data.hasExtra("updatedEvents") && data.hasExtra("updatedPeople")) {
                     // If a person has been updated, they need to be reflected through the app.
-                    // Accessing the refreshed data passed back from the Event details page.
+                    // Accessing the refreshed data passed back from the Event details page:.
                     List<Event> updatedEvents = (List<Event>) data.getSerializableExtra("updatedEvents");
                     List<Person> updatedPeople = (List<Person>) data.getSerializableExtra("updatedPeople");
                     // Then updating the stored events and people accordingly, preventing needless requests.

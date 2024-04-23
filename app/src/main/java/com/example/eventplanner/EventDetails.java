@@ -150,8 +150,10 @@ public class EventDetails extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            // Getting possible data returned from activities which follow after the event details page.
             Event updatedEvent = (Event) data.getSerializableExtra("updatedEvent");
             Person updatedPerson = (Person) data.getSerializableExtra("updatedPerson");
+            String deletedPerson = data.getStringExtra("deletedPerson");
             // Making sure we are getting an event object back from the event update page. (Otherwise display a toast error.)
             if (updatedEvent != null) {
                 // Updating UI with the updated event details
@@ -164,7 +166,7 @@ public class EventDetails extends AppCompatActivity {
                 Toast.makeText(this, "No updated event data received.", Toast.LENGTH_SHORT).show();
             }
             // Refreshing the events so we can get the refreshed updated person in the attendee list.
-            if (updatedPerson != null) {
+            if (updatedPerson != null || !deletedPerson.isEmpty()) {
                 // We also need to tell our list of the update so it can be refreshed as well.
                 Intent resultIntent = new Intent();
                 // If yes, we have updated a person, we need to refresh all the data so the app displays everything up to date.
