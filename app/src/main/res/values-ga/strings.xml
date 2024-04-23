@@ -36,11 +36,14 @@
     <string name="delete_confirmation_message_item">An bhfuil tú cinnte gur mhaith leat an mhír seo a scriosadh?</string>
     <string name="fields_request">Líon isteach gach réimse le do thoil.</string>
 
-
     <string name="yes_button">Tá</string>
-<string name="no_button">Níl</string>#
+<string name="no_button">Níl</string>
+
 
     <string name="data_received">Ní bhfuarthas aon sonraí nuashonraithe faoin duine.</string>
+
+        <string name="logo_desc">Bogearraí Lógó</string>
+
 
 
 
