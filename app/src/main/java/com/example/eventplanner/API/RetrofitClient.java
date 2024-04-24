@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.eventplanner.Models.Event;
 import com.example.eventplanner.Models.Person;
+import com.example.eventplanner.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,12 +67,12 @@ public class RetrofitClient {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     // Displaying Confirmation message that the user has been successfully added to the event.
-                    Toast.makeText(context, "Person added to event successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.AddPersonEventPass, Toast.LENGTH_LONG).show();
                     // Just passing back the success response. (Even though we aren't going to be using it, it's just for chaining the async calls)
                     onSuccess.accept(response);
                 } else {
                     // Handling the case where the server responds with an error
-                    Toast.makeText(context, "Person not added to event.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.AddPersonEventFail, Toast.LENGTH_LONG).show();
                 }
             }
             @Override
@@ -89,7 +90,7 @@ public class RetrofitClient {
             public void onResponse(Call<Person> call, Response<Person> response) {
                 if (response.isSuccessful()) {
                     // Notify the user of successfully adding an event.
-                    Toast.makeText(context, "Person created successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.CreatePersonPass, Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
                     Toast.makeText(context, "Creation failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
@@ -145,7 +146,7 @@ public class RetrofitClient {
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if (response.isSuccessful()) {
                     // Notify the user of successfully adding an event.
-                    Toast.makeText(context, "Event created successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.CreateEventPass, Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
                     Toast.makeText(context, "Creation failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
@@ -175,7 +176,7 @@ public class RetrofitClient {
                     // Telling our Activity that it needs to accept our updated event as an input.
                     onEventUpdateSuccess.accept(originalEvent);
                     // Notify the user of the successful update.
-                    Toast.makeText(context, "Event updated successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.UpdateEventPass, Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
                     Toast.makeText(context, "Update failed." + response.errorBody(), Toast.LENGTH_SHORT).show();
@@ -203,7 +204,7 @@ public class RetrofitClient {
                     // Telling our Activity that it needs to accept our updated event as an input.
                     onPersonUpdateSuccess.accept(originalPerson);
                     // Notify the user of the successful update.
-                    Toast.makeText(context, "Person updated successfully! Well done!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.UpdatePersonPass, Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
                     Toast.makeText(context, "Update failed. Womp womp" + response.errorBody(), Toast.LENGTH_SHORT).show();
@@ -226,7 +227,7 @@ public class RetrofitClient {
                 if (response.isSuccessful()) {
                     // Notify the user of successfully adding an event.
                     onEventDeletionSuccess.accept(response.message());
-                    Toast.makeText(context, "Event deleted successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.DeleteEventPass, Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
                     Toast.makeText(context, "Delete failed." + response.message(), Toast.LENGTH_SHORT).show();
@@ -248,7 +249,7 @@ public class RetrofitClient {
                 if (response.isSuccessful()) {
                     // Notify the user of successfully adding an event.
                     onPersonDeletionSuccess.accept(response.message());
-                    Toast.makeText(context, "Event deleted successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.DeletePersonPass, Toast.LENGTH_SHORT).show();
                 } else {
                     // Notify the user that there was a problem.
                     Toast.makeText(context, "Delete failed." + response.message(), Toast.LENGTH_SHORT).show();

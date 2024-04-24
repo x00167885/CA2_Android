@@ -23,9 +23,15 @@
 
 <string name="update_event_button">Update Event</string>
 
+    <string name="update_fields_name">Enter name</string>
+    <string name="update_fields_age">Enter age</string>
+    <string name="update_fields_desc">Enter description</string>
+    <string name="update_fields_price">Enter price</string>
+    <string name="update_fields_date">Enter date</string>
 
 
-<string name="delete_person_button">Delete Person</string>
+
+    <string name="delete_person_button">Delete Person</string>
 
 <string name="delete_event_button">Delete Event</string>
 
@@ -38,6 +44,27 @@
     <string name="fields_request">Please fill in all fields.</string>
 
     <string name="logo_desc">Application Logo</string>
+
+    <string name="AddPersonEventPass">Person added to event successfully</string>
+    <string name="AddPersonEventFail">Person not added to event.</string>
+
+    <string name="CreatePersonPass">Person created successfully!</string>
+    <string name="CreatePersonFail">Creation failed.</string>
+
+    <string name="CreateEventPass">Event created successfully!</string>
+    <string name="CreateEventFail">Creation failed.</string>
+
+    <string name="UpdateEventPass">Event updated successfully!</string>
+    <string name="UpdateEventFail">Update failed.</string>
+
+    <string name="UpdatePersonPass">Person updated successfully! Well done!</string>
+    <string name="UpdatePersonFail">Update failed.</string>
+
+    <string name="DeletePersonPass">Person deleted successfully!</string>
+    <string name="DeletePersonFail">Delete failed.</string>
+
+    <string name="DeleteEventPass">Event deleted successfully!</string>
+    <string name="DeleteEventFail">Delete failed.</string>
 
 
 

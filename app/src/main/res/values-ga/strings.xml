@@ -23,7 +23,33 @@
 
     <string name="update_event_button">Nuashonrú Imeacht</string>
 
+    <string name="update_fields_name">Cuir ainm</string>
+    <string name="update_fields_age">Cuir aois</string>
+    <string name="update_fields_desc">Iontráil cur síos</string>
 
+    <string name="update_fields_price">Cuir praghas</string>
+    <string name="update_fields_date">Cuir dáta</string>
+
+    <string name="AddPersonEventPass">Déirigh leis an duine a cuireadh leis an imeacht</string>
+    <string name="AddPersonEventFail">Níor cuireadh an duine leis an imeacht.</string>
+
+    <string name="CreatePersonPass">Duine cruthaithe go rathúil!</string>
+    <string name="CreatePersonFail">Theip ar chruthú.</string>
+
+    <string name="CreateEventPass">Imeacht cruthaithe go rathúil!</string>
+    <string name="CreateEventFail">Theip ar chruthú</string>
+
+    <string name="UpdateEventPass">Déirigh leis an imeacht a nuashonrú!</string>
+    <string name="UpdateEventFail">Theip ar an nuashonrú.</string>
+
+    <string name="UpdatePersonPass">Déirigh le nuashonrú an duine! An-mhaith!</string>
+    <string name="UpdatePersonFail">Theip ar an duine a nuashonrú.</string>
+
+    <string name="DeletePersonPass">Scriosadh an duine go rathúil!</string>
+    <string name="DeletePersonFail">Theip ar an scriosadh.</string>
+
+    <string name="DeleteEventPass">Déirigh leis an imeacht a scriosadh!</string>
+    <string name="DeleteEventFail">Theip ar an scriosadh.</string>
 
     <string name="delete_person_button">Scrios Duine</string>
 

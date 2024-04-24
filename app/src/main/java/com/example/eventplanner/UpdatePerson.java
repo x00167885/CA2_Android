@@ -34,8 +34,12 @@ public class UpdatePerson extends AppCompatActivity {
         });
 
         // Initialize your EditText fields
-        editTextName = findViewById(R.id.update_person_name); // Replace with actual ID from your layout
-        editTextAge = findViewById(R.id.update_person_age);   // Replace with actual ID from xml
+        editTextName = findViewById(R.id.update_person_name);// Replace with actual ID from your layout
+        editTextName.setText(R.string.update_fields_name);
+
+        editTextAge = findViewById(R.id.update_person_age);
+        editTextName.setText(R.string.update_fields_age);
+// Replace with actual ID from xml
         buttonBack = findViewById(R.id.back_to_person_details); // Initialize the back button
         buttonBack.setText(R.string.back_button);
         buttonBack.setOnClickListener(v -> {
@@ -47,13 +51,12 @@ public class UpdatePerson extends AppCompatActivity {
         buttonUpdate = findViewById(R.id.update_person_button);
         buttonUpdate.setText(R.string.update_person_button);
         buttonUpdate.setOnClickListener(v -> {
-            Toast.makeText(this, "Updating...", Toast.LENGTH_SHORT).show();
             // Get the values from the EditTexts
             String name = editTextName.getText().toString();
             String age = editTextAge.getText().toString();
             // Check if the user has actually entered the data
             if (name.isEmpty() || age.isEmpty()) {
-                Toast.makeText(UpdatePerson.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UpdatePerson.this, R.string.fields_request, Toast.LENGTH_SHORT).show();
                 return;
             }
             // Getting the person we passed in from the details page.
