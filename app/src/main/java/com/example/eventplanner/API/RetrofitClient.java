@@ -32,7 +32,6 @@ public class RetrofitClient {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create()) // Using GSON to parse response.
                     .build();
-            System.out.println("Making CAll");
         }
         return retrofit.create(APIService.class);
     }

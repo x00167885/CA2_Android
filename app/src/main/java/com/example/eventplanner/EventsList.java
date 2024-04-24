@@ -40,10 +40,8 @@ public class EventsList extends AppCompatActivity {
             return insets;
         });
 
-        // Listing out the events.
+        // An event list so when we click on one, we go to it's details page.
         eventsList = findViewById(R.id.eventsList);
-
-        // So we can click on an event from the list.
         eventsList.setOnItemClickListener((parent, view, position, id) -> {
             Event selectedEvent = arrayAdapter.getItem(position);
             // Going to go to the selected events details page from here, below:
@@ -104,7 +102,7 @@ public class EventsList extends AppCompatActivity {
         }
 
         if (RetrofitClient.retrievedPeople.isEmpty()) {
-            // Calling API to retrieve all people, so they can be rendered appropriately by sub-pages:
+            // Calling API to retrieve all people, so they can be rendered appropriately in later activities.
             updatePeople(null);
         }
     }
@@ -126,12 +124,10 @@ public class EventsList extends AppCompatActivity {
                     updateEvents(updatedEvents);
                     updatePeople(updatedPeople);
                 }
-            } else {
-                System.out.println("No Event was added, updated, or deleted so no need to refresh.");
             }
+            //No Event was added, updated, or deleted so no need to refresh
         }
     }
-
     private void updateEventListView(List<Event> events) {
         // Create a list of strings to display in the ListView
         List<Event> eventObjects = new ArrayList<>();
@@ -151,10 +147,10 @@ public class EventsList extends AppCompatActivity {
                 // Storing the retrieved events so as to not make needless requests.
                 RetrofitClient.retrievedEvents = retrievedEvents;
             });
-        }else{
+        } else {
             // We store the events we got back...
             RetrofitClient.retrievedEvents = updatedEvents;
-            // Also need to update the events list view to properly propogate changes.
+            // Also need to update the events list view to properly propagate changes.
             updateEventListView(RetrofitClient.retrievedEvents);
         }
     }

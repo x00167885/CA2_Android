@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Button to go to the events list.
-        Button eventsListLink = findViewById(R.id.button);
+        Button eventsListLink = findViewById(R.id.goto_events);
         eventsListLink.setText(R.string.GoToEvents_button);
         eventsListLink.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, EventsList.class);
