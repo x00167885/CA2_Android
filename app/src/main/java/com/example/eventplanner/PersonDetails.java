@@ -53,7 +53,7 @@ public class PersonDetails extends AppCompatActivity {
 
         // Button to go to edit event page.
         Button buttonEditEvent = findViewById(R.id.goto_update_person);
-        buttonEditEvent.setText(R.string.update_event_button);
+        buttonEditEvent.setText(R.string.update_person_button);
         buttonEditEvent.setOnClickListener(v -> {
             // Create an intent to start the UpdateEvent activity
             Intent intent = new Intent(PersonDetails.this, UpdatePerson.class);
