@@ -33,10 +33,9 @@ public class UpdatePerson extends AppCompatActivity {
 
         // Initialize your EditText fields
         editTextName = findViewById(R.id.update_person_name);// Replace with actual ID from your layout
-        editTextName.setText(R.string.update_fields_name);
+
         editTextAge = findViewById(R.id.update_person_age);
-        editTextName.setText(R.string.update_fields_age);
-        // Replace with actual ID from xml
+
         buttonBack = findViewById(R.id.back_to_person_details); // Initialize the back button
         buttonBack.setText(R.string.back_button);
         buttonBack.setOnClickListener(v -> {
@@ -44,7 +43,7 @@ public class UpdatePerson extends AppCompatActivity {
             finish();
         });
 
-        // Update Person button.
+        // Update Person button. Only buttons get setText method
         buttonUpdate = findViewById(R.id.update_person_button);
         buttonUpdate.setText(R.string.update_person_button);
         buttonUpdate.setOnClickListener(v -> {
