@@ -123,6 +123,8 @@ public class EventDetails extends AppCompatActivity {
             intent.putExtra("selectedPerson", selectedPerson);
             // Passing in the event object to calculate price for person.
             intent.putExtra("selectedEvent", selectedEvent);
+            // Setting chosen person from spinner to false so we don't add a person on event details activity return.
+            isUserInteracted = false;
             // Passing in the list of people within our database, so we can select to add in the details page.            // Start the activity and expect a result back if an event has been updated.
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
@@ -135,6 +137,8 @@ public class EventDetails extends AppCompatActivity {
             Intent intent = new Intent(EventDetails.this, UpdateEvent.class);
             // You can also pass the entire event object if the Event class implements Serializable
             intent.putExtra("eventDetails", selectedEvent);
+            // Setting chosen person from spinner to false so we don't add a person on event details activity return.
+            isUserInteracted = false;
             // Start the activity and expect a result back.
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
