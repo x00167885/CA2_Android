@@ -22,7 +22,6 @@ public class RetrofitClient {
     private static final String BASE_URL = "https://ead2-ca2-api.azurewebsites.net/"; // Our API hosted on Azure.
     public static List<Event> retrievedEvents = new ArrayList<>();
     public static List<Person> retrievedPeople = new ArrayList<>();
-    ;
 
     // API Service:
     public static APIService getApiService() {
@@ -191,8 +190,8 @@ public class RetrofitClient {
     }
 
     // Updating the event details endpoint.
-    public static void updatePersonHelper(Context context, int eventId, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess) {
-        getApiService().updatePerson(eventId, originalPerson.getId(), personForUpdate).enqueue(new Callback<Person>() {
+    public static void updatePersonHelper(Context context, Person originalPerson, Person personForUpdate, Consumer<Person> onPersonUpdateSuccess) {
+        getApiService().updatePerson(originalPerson.getId(), personForUpdate).enqueue(new Callback<Person>() {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
                 if (response.isSuccessful()) {
@@ -242,8 +241,8 @@ public class RetrofitClient {
         });
     }
 
-    public static void deletePersonHelper(Context context, int eventId, int personId, Consumer<String> onPersonDeletionSuccess) {
-        getApiService().deletePerson(eventId, personId).enqueue(new Callback<Void>() {
+    public static void deletePersonHelper(Context context, int personId, Consumer<String> onPersonDeletionSuccess) {
+        getApiService().deletePerson(personId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

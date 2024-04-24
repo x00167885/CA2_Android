@@ -40,8 +40,6 @@ public class PersonDetails extends AppCompatActivity {
 
         // Retrieve the data for the people
         Person selectedPerson = (Person) getIntent().getSerializableExtra("selectedPerson");
-        // Retrieving event id for updating person.
-        int eventId = getIntent().getIntExtra("eventId", -1);
 
         // Getting the name of the person
         TextView personNameTextView = findViewById(R.id.person_name_text_view);
@@ -59,8 +57,6 @@ public class PersonDetails extends AppCompatActivity {
             Intent intent = new Intent(PersonDetails.this, UpdatePerson.class);
             // You can also pass the entire event object if the Event class implements Serializable
             intent.putExtra("personDetails", selectedPerson);
-            // Passing in the event id for updating person object.
-            intent.putExtra("eventId", eventId);
             // Start the activity and expect a result back.
             startActivityForResult(intent, UPDATE_REQUEST_CODE);
         });
@@ -68,7 +64,7 @@ public class PersonDetails extends AppCompatActivity {
         Button buttonDeletePerson = findViewById(R.id.delete_person_button);
         buttonDeletePerson.setText(R.string.delete_person_button);
         buttonDeletePerson.setOnClickListener(v -> {
-            showDeleteConfirmationDialog(selectedPerson, eventId);
+            showDeleteConfirmationDialog(selectedPerson);
         });
 
         // Button to go back to the events details.
@@ -80,14 +76,14 @@ public class PersonDetails extends AppCompatActivity {
     }
 
     //     Showing a delete confirmation dialog for when the user chooses to delete a person.
-    private void showDeleteConfirmationDialog(Person person, int eventId) {
+    private void showDeleteConfirmationDialog(Person person) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.delete_confirmation_title) // Optional: set a title for the dialog
                 .setMessage(R.string.delete_confirmation_message)
                 .setPositiveButton(R.string.yes_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int button_yes) {
-                        RetrofitClient.deletePersonHelper(getApplicationContext(), eventId, person.getId(), deletionConfirmation -> {
+                        RetrofitClient.deletePersonHelper(getApplicationContext(), person.getId(), deletionConfirmation -> {
                             // Setting the result code for this activity, because we just deleted the event for this page.
                             Intent resultIntent = new Intent();
                             resultIntent.putExtra("deletedPerson", "Person Deleted");

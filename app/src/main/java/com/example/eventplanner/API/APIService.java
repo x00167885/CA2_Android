@@ -35,11 +35,11 @@ public interface APIService {
     @GET("api/Events/People")
     Call<List<Person>> getPeople();
 
-    @PUT("api/Events/{eventId}/Person/{personId}")
-    Call<Person> updatePerson(@Path("eventId") int eventId, @Path("personId") int personId, @Body Person person);
+    @PUT("api/Events/Person/{personId}")
+    Call<Person> updatePerson(@Path("personId") int personId, @Body Person person);
 
-    @DELETE("api/Events/{eventId}/Person/{personId}")
-    Call<Void> deletePerson(@Path("eventId") int eventId, @Path("personId") int personId);
+    @DELETE("api/Events/Person/{personId}")
+    Call<Void> deletePerson(@Path("personId") int personId);
 
     @POST("api/Events/Person")
     Call<Person> addPerson(@Body Person person);
