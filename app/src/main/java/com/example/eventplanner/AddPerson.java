@@ -36,7 +36,6 @@ public class AddPerson extends AppCompatActivity {
         Button buttonAdd = findViewById(R.id.add_person_button);
         buttonAdd.setText(R.string.add_person_button);
 
-
         buttonAdd.setOnClickListener(v -> {
             // Get the values from the EditTexts
             String name = editTextName.getText().toString();

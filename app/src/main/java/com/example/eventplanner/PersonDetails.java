@@ -23,9 +23,10 @@ import com.example.eventplanner.Models.Person;
 
 public class PersonDetails extends AppCompatActivity {
     private ListView EventList;
+    private TextView personNameTextView, personAgeTextView, attendeeCostTextView;
     private ArrayAdapter<Event> arrayAdapter;
     private int UPDATE_REQUEST_CODE = 1;
-    private boolean isUserInteracted = false;
+    private Event chosenEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +41,20 @@ public class PersonDetails extends AppCompatActivity {
 
         // Retrieve the data for the people
         Person selectedPerson = (Person) getIntent().getSerializableExtra("selectedPerson");
+        Event selectedEvent = (Event) getIntent().getSerializableExtra("selectedEvent");
+        chosenEvent = selectedEvent;
 
         // Getting the name of the person
-        TextView personNameTextView = findViewById(R.id.person_name_text_view);
+        personNameTextView = findViewById(R.id.person_name_text_view);
         personNameTextView.setText(selectedPerson.getName());
 
         // Getting the age of the person
-        TextView personAgeTextView = findViewById(R.id.person_age_text_view);
+        personAgeTextView = findViewById(R.id.person_age_text_view);
         personAgeTextView.setText(Integer.toString(selectedPerson.getAge()));
+
+        // Setting Attendee cost:
+        attendeeCostTextView = findViewById(R.id.attendee_cost);
+        attendeeCostTextView.setText("€ " + Double.toString(calculateCostForPerson(selectedPerson.getAge(), selectedEvent.getPrice())));
 
         // Button to go to edit event page.
         Button buttonEditEvent = findViewById(R.id.goto_update_person);
@@ -108,6 +115,8 @@ public class PersonDetails extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("updatedPerson", updatedPerson);
                 setResult(RESULT_OK, resultIntent);
+                // We need to update the cost displayed based on the person's new age if edited.
+                attendeeCostTextView.setText("€ " + Double.toString(calculateCostForPerson(updatedPerson.getAge(), chosenEvent.getPrice())));
             } else {
                 Toast.makeText(this, R.string.data_received, Toast.LENGTH_SHORT).show();
             }
@@ -120,5 +129,15 @@ public class PersonDetails extends AppCompatActivity {
         personNameTextView.setText(person.getName());
         TextView personAgeTextView = findViewById(R.id.person_age_text_view);
         personAgeTextView.setText(Integer.toString(person.getAge()));
+    }
+
+    private double calculateCostForPerson(int person_age, float event_cost){
+        if (person_age <= 18) {
+            return (event_cost * 0.75);
+        } else if (person_age <= 60) {
+            return event_cost;
+        } else {
+            return (event_cost * 0.25);
+        }
     }
 }
