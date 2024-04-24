@@ -71,7 +71,7 @@
         android:id="@+id/activity_title"
         android:layout_width="344dp"
         android:layout_height="56dp"
-        android:text="Events List"
+        android:text="@string/EventsList"
         android:textAlignment="center"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
