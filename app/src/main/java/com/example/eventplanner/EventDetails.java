@@ -178,7 +178,7 @@ public class EventDetails extends AppCompatActivity {
                 Toast.makeText(this, "No updated event data received.", Toast.LENGTH_SHORT).show();
             }
             // Refreshing the events so we can get the refreshed updated person in the attendee list.
-            if (updatedPerson != null || !deletedPerson.isEmpty()) {
+            if (updatedPerson != null || deletedPerson != null) {
                 // We also need to tell our list of the update so it can be refreshed as well.
                 Intent resultIntent = new Intent();
                 // If yes, we have updated a person, we need to refresh all the data so the app displays everything up to date.
