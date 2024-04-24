@@ -29,12 +29,10 @@ public class AddPerson extends AppCompatActivity {
         });
         // Getting the name of the person
         editTextName = findViewById(R.id.add_person_name);
-        editTextName.setText(R.string.update_fields_name);
         // Getting the age of the person
         editTextAge = findViewById(R.id.add_person_age);
-        editTextAge.setText(R.string.update_fields_age);
 
-        // Add Event button.
+        // Add Person button.
         Button buttonAdd = findViewById(R.id.add_person_button);
         buttonAdd.setText(R.string.add_person_button);
 

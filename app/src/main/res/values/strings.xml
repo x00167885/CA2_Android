@@ -16,7 +16,7 @@
 
 <string name="add_event_button">Add Event</string>
 
-
+    <string name="addPersonList">Add Person To Event:</string>
 
 <string name="update_person_button">Update Person</string>
 

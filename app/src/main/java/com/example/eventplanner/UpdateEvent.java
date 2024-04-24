@@ -41,16 +41,12 @@ public class UpdateEvent extends AppCompatActivity {
         });
         // Initialize your EditText fields
         editTextTitle = findViewById(R.id.update_event_name); // Replace with actual ID from your layout
-        editTextTitle.setText(R.string.update_fields_name); //internationalise the fields
 
         editTextDate = findViewById(R.id.update_event_date);   // Replace with actual ID from your layout
-        editTextDate.setText(R.string.update_fields_date);
 
         editTextDescription = findViewById(R.id.update_event_description); // Replace with actual ID from your layout
-        editTextDescription.setText(R.string.update_fields_desc);
 
         editTextPrice = findViewById(R.id.update_event_price);
-        editTextPrice.setText(R.string.update_fields_price);
 
         // Adding a date picker:
         editTextDate.setOnClickListener(v -> {

@@ -51,6 +51,9 @@
     <string name="DeleteEventPass">Déirigh leis an imeacht a scriosadh!</string>
     <string name="DeleteEventFail">Theip ar an scriosadh.</string>
 
+    <string name="addPersonList">Cuir Duine Leis an Imeacht:</string>
+
+
     <string name="delete_person_button">Scrios Duine</string>
 
     <string name="delete_event_button">Scrios Imeacht</string>

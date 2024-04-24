@@ -40,16 +40,16 @@ public class AddEvent extends AppCompatActivity {
 
         // Initialize your EditText fields
         editTextTitle = findViewById(R.id.add_event_name); // Replace with actual ID from your layout
-        editTextTitle.setText(R.string.update_fields_name);
+//        editTextTitle.setText(R.string.update_fields_name);
 
         editTextDate = findViewById(R.id.add_event_date);   // Replace with actual ID from your layout
-        editTextDate.setText(R.string.update_fields_date);
+//        editTextDate.setText(R.string.update_fields_date);
 
         editTextDescription = findViewById(R.id.add_event_description); // Replace with actual ID from your layout
-        editTextDescription.setText(R.string.update_fields_desc);
+//        editTextDescription.setText(R.string.update_fields_desc);
 
         editTextPrice = findViewById(R.id.add_event_price);
-        editTextPrice.setText(R.string.update_fields_price);
+//        editTextPrice.setText(R.string.update_fields_price);
         // Adding a date picker:
         editTextDate.setOnClickListener(v -> {
             // Use the current date as the default date in the picker
