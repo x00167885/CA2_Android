@@ -51,6 +51,15 @@
     <string name="DeleteEventPass">Déirigh leis an imeacht a scriosadh!</string>
     <string name="DeleteEventFail">Theip ar an scriosadh.</string>
 
+    <string name="EventName">Ainm an Imeachta</string>
+    <string name="EventPrice">Praghas Imeachta</string>
+
+    <string name="Age">Aois</string>
+    <string name="PersonDetails">Sonraí an Duine</string>
+
+    <string name="AttendeeCost">Costas Freastalaí:</string>
+
+
     <string name="addPersonList">Cuir Duine Leis an Imeacht:</string>
 
 

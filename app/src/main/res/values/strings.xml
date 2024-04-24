@@ -66,6 +66,17 @@
     <string name="DeleteEventPass">Event deleted successfully!</string>
     <string name="DeleteEventFail">Delete failed.</string>
 
+    <string name="EventName"></string>
+    <string name="EventPrice"> </string>
+
+    <string name="Age">Age</string>
+    <string name="PersonDetails">Person Details</string>
+
+    <string name="AttendeeCost">Attendee Cost:</string>
+<!--    <string name="PersonDetails">Person Details</string>-->
+
+
+
 
 
 
