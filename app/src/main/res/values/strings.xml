@@ -31,7 +31,8 @@
 
 <string name="GoToEvents_button">Go To Events</string>
 
-<string name="delete_confirmation_title">Confirm Delete</string>
+
+    <string name="delete_confirmation_title">Confirm Delete</string>
 <string name="delete_confirmation_message">Are you sure you want to delete this person?</string>
     <string name="delete_confirmation_message_item">Are you sure you want to delete this item?</string>
     <string name="fields_request">Please fill in all fields.</string>
